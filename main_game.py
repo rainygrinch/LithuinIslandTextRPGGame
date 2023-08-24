@@ -14,13 +14,16 @@ class player:
         self.hp = 0                     # health points
         self.mp = 0                     # magic points
         self.status_effect = []         # status effects
-    myPlayer = player()
+        self.job = ""                   # player class type
+        self.location = "c4"
+        self.gameover = False
+myPlayer = player()
 
 ##### TITLE SELECTIONS #####
 
 def title_screen_selections():
     option = input("> ")
-    if option.lower() == ("play")
+    if option.lower() == ("play"):
         start_game()                    # placeholder until code is written
     elif option.lower() == ("help"):
         help_menu()                     # help menu
@@ -30,7 +33,7 @@ def title_screen_selections():
     while option.lower() not in ["play", "help", "quit"]:
         print("Please enter a valid command.")
         option = input("> ")
-        if option.lower() == ("play")
+        if option.lower() == ("play"):
             start_game()                # placeholder until code is written (second attempt)
         elif option.lower() == ("help"):
             help_menu()                 # help menu (second attempt)
@@ -66,13 +69,6 @@ def help_menu():
     print("# Good luck, and have fun   #")
     print("#############################")
 
-
-## GAME FUNCTIONALITY ##
-def start_game():
-
-
-
-
 ## MAP ##
 """
   A   B   C   D   E
@@ -100,7 +96,7 @@ SOLVED = False
 UP = "up", "north"
 DOWN = "down", "south"
 LEFT = "left", "west"
-RIGHT - "right", "east"
+RIGHT = "right", "east"
 
 solved_places = {"a1": False, "b1": False, "c1": False, "d1": False, "e1": False,
                  "a2": False, "b2": False, "c2": False, "d2": False, "e2": False,
@@ -462,3 +458,126 @@ zonemap = {
         "RIGHT": ["right", "east"],
     }
 }
+
+
+
+## GAME INTERACTIVITY ##
+def print_location():
+    print("\n" + ("#" x (4 + len(myPlayer.location))))
+    print("# " + myPlayer.location.upper() + " #")
+    print("# " + zonemap[myPlayer.location][DESCRIPTION] + " #")
+    print("\n" + ("#" x (4 + len(myPlayer.location))))
+
+def prompt():
+    print("\n" + "==================")
+    print("What would you like to do?")
+    action = input("> ")
+    acceptable_movement_actions = ["move", "go", "travel", "walk", "journey", "run"]
+    acceptable_examine_actions = ["inspect", "examine", "look", "peek", "interact"]
+    while action.lower() not in acceptable_examine_actions or action.lower() not in acceptable_examine_actions:
+        print("Unknown action, please try again \n")
+        action = input("> ")
+    if action.lower() == "quit":
+        sys.exit()
+    elif action.lower() in acceptable_movement_actions:
+        player_move(action.lower())
+    elif action.lower() in acceptable_examine_actions:
+        player_examine(action.lower())
+
+def player_move(myAction):
+    ask = "Where would you like to move to?\n"
+    dest = input(ask)
+    if dest in ["up", "north"]:
+        destination = zonemap[myPlayer.location][UP]
+        movement_handler(destination)
+    if dest in ["left", "west"]:
+        destination = zonemap[myPlayer.location][LEFT]
+        movement_handler(destination)
+    if dest in ["right", "east"]:
+        destination = zonemap[myPlayer.location][RIGHT]
+        movement_handler(destination)
+    if dest in ["down", "south"]:
+        destination = zonemap[myPlayer.location][DOWN]
+        movement_handler(destination)
+def movement_handler(destination):
+    print("\n" + "You have moved to the " + destination + ".")
+        myPlayer.location = destination
+        print_location()
+def player_examine(action):
+    if zonemap[myPlayer.location][SOLVED]:
+        print("You have already completed this part of the Island.")
+    else:
+        print("Looks like there's something you need to do here...")
+
+
+
+
+
+## GAME FUNCTIONALITY ##
+
+
+
+def main_game_loop():
+    while myPlayer.gameover is False:
+        prompt()
+        # here handle puzzles, boss, enemies etc
+
+def start_game():
+        os.system("clear")
+
+    ## NAME COLLECTION ###
+    question1 = "NAME?\n"
+    for character in question1:
+        sys.stdout.write(character)
+        sys.stdout.flush()
+        time.sleep(0.05)
+    player_name = input("> ")
+    myPlayer.name = player_name
+
+    ## PLAYER CLASS COLLECTION ##
+
+    question2 = "CLASS?\n"
+    valid_jobs = ["warrior", "mage", "priest"]
+    question2added = ("You can play as any of the following: " + valid_jobs)
+    for character in question2:
+        sys.stdout.write(character)
+        sys.stdout.flush()
+        time.sleep(0.05)
+    for character in question2added:
+        sys.stdout.write(character)
+        sys.stdout.flush()
+        time.sleep(0.02)
+    player_job = input("> ")
+
+    if myPlayer.job.lower() in valid_jobs:
+        myPlayer.job = player_job
+        print("You will be known on Lithuin Island as " + myPlayer.name + " the " + myPlayer.job "!\n")
+    while myPlayer.job.lower() not in valid_jobs:
+        print("That's not a valid player class, try again")
+        player_jobs = input("> ")
+        if player_job.lower() in valid_jobs:
+            myPlayer.job = player_job
+            print("You are now " + myPlayer.name + " the " + myPlayer.job)
+
+        ## PLAYER STATS ##
+
+        if myPlayer.job is "warrior":
+            self.hp = 120
+            self.mp = 20
+        elif myPlayer.job is "mage":
+            self.hp = 20
+            self.mp = 120
+        elif myPlayer.job is "priest":
+            self.hp = 70
+            self.mp = 70
+
+
+
+
+
+
+
+
+## GAME HANDLING ##
+
+
