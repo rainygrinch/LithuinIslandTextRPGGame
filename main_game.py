@@ -472,7 +472,7 @@ def prompt():
     print("\n" + "==================")
     print("What would you like to do?")
     action = input("> ")
-    acceptable_movement_actions = ["move", "go", "travel", "walk", "journey", "run"]
+    acceptable_movement_actions = ["move", "go", "travel", "walk", "journey", "run", "quit"]
     acceptable_examine_actions = ["inspect", "examine", "look", "peek", "interact"]
     while action.lower() not in acceptable_examine_actions or action.lower() not in acceptable_examine_actions:
         print("Unknown action, please try again \n")
@@ -486,7 +486,7 @@ def prompt():
 
 def player_move(myAction):
     ask = "Where would you like to move to?\n"
-    dest = input(ask)
+    dest = input("> \n")
     if dest in ["up", "north"]:
         destination = zonemap[myPlayer.location][UP]
         movement_handler(destination)
@@ -501,8 +501,8 @@ def player_move(myAction):
         movement_handler(destination)
 def movement_handler(destination):
     print("\n" + "You have moved to the " + destination + ".")
-        myPlayer.location = destination
-        print_location()
+    myPlayer.location = destination
+    print_location()
 def player_examine(action):
     if zonemap[myPlayer.location][SOLVED]:
         print("You have already completed this part of the Island.")
@@ -523,7 +523,7 @@ def main_game_loop():
         # here handle puzzles, boss, enemies etc
 
 def start_game():
-        os.system("clear")
+    os.system("clear")
 
     ## NAME COLLECTION ###
     question1 = "NAME?\n"
@@ -554,7 +554,7 @@ def start_game():
         print("You will be known on Lithuin Island as " + myPlayer.name + " the " + myPlayer.job "!\n")
     while myPlayer.job.lower() not in valid_jobs:
         print("That's not a valid player class, try again")
-        player_jobs = input("> ")
+        player_job = input("> ")
         if player_job.lower() in valid_jobs:
             myPlayer.job = player_job
             print("You are now " + myPlayer.name + " the " + myPlayer.job)
@@ -571,7 +571,45 @@ def start_game():
             self.hp = 70
             self.mp = 70
 
+    ## INTRODUCTION ##
 
+    question3 = "Welcome, " + player_name + " the " + player_job ".\n"
+    for character in question3:
+        sys.stdout.write(character)
+        sys.stdout.flush()
+        time.sleep(0.05)
+    player_name = input("> ")
+
+    speech1 = "Welcome to this Fantasy World!"
+    speech2 = "I hope it greets you well!"
+    speech3 = "Just make sure you don't get too lost..." \
+    speech4 = "Heh... heh... heh..."
+
+    for character in speech1:
+        sys.stdout.write(character)
+        sys.stdout.flush()
+        time.sleep(0.05)
+    for character in speech2:
+        sys.stdout.write(character)
+        sys.stdout.flush()
+        time.sleep(0.05)
+    for character in speech3:
+        sys.stdout.write(character)
+        sys.stdout.flush()
+        time.sleep(0.05)
+    for character in speech4:
+        sys.stdout.write(character)
+        sys.stdout.flush()
+        time.sleep(0.01)
+
+    os.system("clear")
+    print("##########################")
+    print("#   Let's start now...   #")
+    print("##########################")
+    main_game_loop()
+
+
+title_screen()
 
 
 
