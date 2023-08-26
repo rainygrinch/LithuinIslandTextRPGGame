@@ -5,6 +5,7 @@ import sys
 import cmd
 import textwrap
 
+
 ## GAME HANDLING ##
 
 def clear_screen():
@@ -14,6 +15,7 @@ def clear_screen():
     else:
         os.system('clear')  # Use 'clear' to clear the screen on Unix/Linux
 
+
 screen_width = 100
 
 
@@ -22,45 +24,52 @@ def sitrep():
     print("Location: " + zone_name)
     print("Health: " + str(myPlayer.hp))
     print("Magic Points: " + str(myPlayer.mp))
-    print("Current Weapon: " + myPlayer.weapon)
+    print("Current Weapon: " + myPlayer.equipped_weapon)
 
     # Count the number of areas solved
     solved_count = sum(1 for solved in solved_places.values() if solved)
     print("Areas Solved: " + str(solved_count))
 
+
 ##### PLAYER SETUP #####
 class player:
     def __init__(self):
-        self.weapon = "None"            # Weapon
-        self.name = ""                  # player name
-        self.hp = 0                     # health points
-        self.mp = 0                     # magic points
-        self.status_effect = []         # status effects
-        self.job = ""                   # player class type
+        self.equipped_weapon = "None"  # Weapon
+        self.item = []
+        self.special_item = ["lighthouse key", "gourda castle key",]
+        self.name = ""  # player name
+        self.hp = 0  # health points
+        self.mp = 0  # magic points
+        self.ap = 0  # attack points
+        self.status_effect = []  # status effects
+        self.job = ""  # player class type
         self.location = "c4"
         self.gameover = False
+
+
 myPlayer = player()
+
 
 ##### TITLE SELECTIONS #####
 
 def title_screen_selections():
     option = input("> ")
     if option.lower() == ("play"):
-        start_game()                    # placeholder until code is written
+        start_game()  # placeholder until code is written
     elif option.lower() == ("help"):
-        help_menu()                     # help menu
+        help_menu()  # help menu
     elif option.lower() == ("quit"):
-        sys.exit()                      # system exit game
+        sys.exit()  # system exit game
 
     while option.lower() not in ["play", "help", "quit"]:
         print("Please enter a valid command.")
         option = input("> ")
         if option.lower() == ("play"):
-            start_game()                # placeholder until code is written (second attempt)
+            start_game()  # placeholder until code is written (second attempt)
         elif option.lower() == ("help"):
-            help_menu()                 # help menu (second attempt)
+            help_menu()  # help menu (second attempt)
         elif option.lower() == ("quit"):
-            sys.exit()                  # system exit game (second attempt)
+            sys.exit()  # system exit game (second attempt)
 
 
 ## TITLE SCREEN ##
@@ -77,6 +86,7 @@ def title_screen():
     print("#  Inspired by - BTONG.ME   #")
     print("#############################")
     title_screen_selections()
+
 
 ## HELP MENU ##
 def help_menu():
@@ -127,6 +137,8 @@ ZONENAME = ""
 DESCRIPTION = "description"
 EXAMINATION = "examine"
 SOLVED = False
+ITEM = "item"
+BOSS = "boss"
 UP = "up", "north"
 DOWN = "down", "south"
 LEFT = "left", "west"
@@ -147,6 +159,8 @@ zonemap = {
         DESCRIPTION: "It's strange, this land before you. There is no life, nothing to see, just wasteland...",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "",
         DOWN: "a2",
         LEFT: "",
@@ -157,6 +171,8 @@ zonemap = {
         DESCRIPTION: "You're standing on the northern shore of the island, there are no boats or bridges.",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "",
         DOWN: "b2",
         LEFT: "a1",
@@ -167,6 +183,8 @@ zonemap = {
         DESCRIPTION: "You're standing on the northern shore of the island, there are no boats or bridges.",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "",
         DOWN: "c2",
         LEFT: "b1",
@@ -177,6 +195,8 @@ zonemap = {
         DESCRIPTION: "You're standing on the northern shore of the island, there are no boats or bridges.",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "",
         DOWN: "d2",
         LEFT: "c1",
@@ -187,6 +207,8 @@ zonemap = {
         DESCRIPTION: "It's strange, this land before you. There is no life, nothing to see, just wasteland...",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "",
         DOWN: "e2",
         LEFT: "d1",
@@ -197,6 +219,8 @@ zonemap = {
         DESCRIPTION: "You're standing on the western shore of the island, there are no boats or bridges.",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "a1",
         DOWN: "a3",
         LEFT: "",
@@ -207,6 +231,8 @@ zonemap = {
         DESCRIPTION: "The ground shakes, as if something is under there. Sand spans as far as the eye can see, the odd cactus here and there.",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "b1",
         DOWN: "b3",
         LEFT: "a2",
@@ -217,6 +243,8 @@ zonemap = {
         DESCRIPTION: "Tiny mounds dot the sandy landscape, a thunderous sound of millions of tiny feet marching in unison is getting louder, as if coming from below the surface...",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "c1",
         DOWN: "c3",
         LEFT: "b2",
@@ -227,6 +255,8 @@ zonemap = {
         DESCRIPTION: "A cool breeze feels refreshing, and something glimmers and twinkles, surrounded by palm tress",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "d1",
         DOWN: "d3",
         LEFT: "c2",
@@ -237,6 +267,8 @@ zonemap = {
         DESCRIPTION: "You're standing on the eastern shore of the island, there are no boats or bridges.",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "e1",
         DOWN: "e3",
         LEFT: "c2",
@@ -247,6 +279,8 @@ zonemap = {
         DESCRIPTION: "You're standing on the western shore of the island, there are no boats or bridges.",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "a2",
         DOWN: "a4",
         LEFT: "",
@@ -257,6 +291,8 @@ zonemap = {
         DESCRIPTION: "This unexplored forrest may contain some mystery in the future, but for now it's just a forrest",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "b2",
         DOWN: "b4",
         LEFT: "a3",
@@ -267,6 +303,8 @@ zonemap = {
         DESCRIPTION: "Local Farmers tend to their crops, and a scare crow stands silently in the field",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "c2",
         DOWN: "c4",
         LEFT: "b3",
@@ -277,6 +315,8 @@ zonemap = {
         DESCRIPTION: "This unexplored forrest may contain some mystery in the future, but for now it's just a forrest",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "d2",
         DOWN: "d4",
         LEFT: "c3",
@@ -287,6 +327,8 @@ zonemap = {
         DESCRIPTION: "You're standing on the eastern shore of the island, there are no boats or bridges.",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "d2",
         DOWN: "d4",
         LEFT: "c3",
@@ -297,6 +339,8 @@ zonemap = {
         DESCRIPTION: "This sandy beach on the western shore of Lithuin Island is great for getting a tan",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "a3",
         DOWN: "a5",
         LEFT: "",
@@ -307,6 +351,8 @@ zonemap = {
         DESCRIPTION: "Gentle hills, fields of grass, and the occasional horse are all that can be seen here",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "b3",
         DOWN: "b5",
         LEFT: "a4",
@@ -315,8 +361,10 @@ zonemap = {
     "c4": {
         ZONENAME: "CENTRAL FORREST",
         DESCRIPTION: "The Central Forrest is in the middle of the Island of Lithuin. Tall tress create a canopy that blocks the sky, but causes the forrest floor to glisten with a green, almost magical glow. A strange mound of dirt a few steps away appears fairly fresh.",
-        EXAMINATION: "examine",
+        EXAMINATION: "This is where you first woke up",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "c3",
         DOWN: "c5",
         LEFT: "b4",
@@ -326,6 +374,8 @@ zonemap = {
         ZONENAME: "CAVE",
         DESCRIPTION: "This cave is dark, and smelly, but goes deep...",
         EXAMINATION: "examine",
+        ITEM: "None",
+        BOSS: None,
         UP: "d3",
         DOWN: "d5",
         LEFT: "c4",
@@ -336,6 +386,8 @@ zonemap = {
         DESCRIPTION: "Nothing...a landscape of dust and more dust. No point going any further east...",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "e3",
         DOWN: "e5",
         LEFT: "d4",
@@ -346,6 +398,8 @@ zonemap = {
         DESCRIPTION: "You're standing on the western shore of the island, there are no boats or bridges.",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "a4",
         DOWN: "a6",
         LEFT: "",
@@ -356,6 +410,8 @@ zonemap = {
         DESCRIPTION: "A snow-capped peak that seems to touch the sky, and a treacherous climb...",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "b4",
         DOWN: "b6",
         LEFT: "a5",
@@ -366,6 +422,8 @@ zonemap = {
         DESCRIPTION: "The biggest settlement on the Island, but a low population nonetheless",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "c4",
         DOWN: "c6",
         LEFT: "b5",
@@ -376,6 +434,8 @@ zonemap = {
         DESCRIPTION: "Named after the singing lady who built it, not much else is known about Gourda Castle, no one has been in there for decades...",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "d4",
         DOWN: "d6",
         LEFT: "c5",
@@ -386,6 +446,8 @@ zonemap = {
         DESCRIPTION: "You're standing on the eastern shore of the island, there are no boats or bridges.",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "e4",
         DOWN: "e6",
         LEFT: "d5",
@@ -396,6 +458,8 @@ zonemap = {
         DESCRIPTION: "You're standing on the western shore of the island, there are no boats or bridges.",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "a5",
         DOWN: "a7",
         LEFT: "",
@@ -406,6 +470,8 @@ zonemap = {
         DESCRIPTION: "A tall, red and white striped lighthouse looks over the sea. The door requires a key",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "b5",
         DOWN: "b7",
         LEFT: "a6",
@@ -416,6 +482,8 @@ zonemap = {
         DESCRIPTION: "A green, thick water covers the floor motionlessly, mangrove trees erupt from the silence",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "c5",
         DOWN: "c7",
         LEFT: "b6",
@@ -426,6 +494,8 @@ zonemap = {
         DESCRIPTION: "This beach is rocky, Gourda Castle looms over it, and bones remain from unlucky travellers",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "d5",
         DOWN: "d7",
         LEFT: "c6",
@@ -436,6 +506,8 @@ zonemap = {
         DESCRIPTION: "You're standing on the eastern shore of the island, there are no boats or bridges.",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "e5",
         DOWN: "e7",
         LEFT: "d6",
@@ -446,6 +518,8 @@ zonemap = {
         DESCRIPTION: "Desolate wasteland stretches as far as the eye can see. Theres nowhere to go to the south, or the west",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: "a6",
         DOWN: "",
         LEFT: "",
@@ -456,6 +530,8 @@ zonemap = {
         DESCRIPTION: "You're standing on the southern shore of the island, there are no boats or bridges.",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: ["up", "north"],
         DOWN: ["down", "south"],
         LEFT: ["left", "west"],
@@ -466,6 +542,8 @@ zonemap = {
         DESCRIPTION: "You're standing on the southern shore of the island, there are no boats or bridges.",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: ["up", "north"],
         DOWN: ["down", "south"],
         LEFT: ["left", "west"],
@@ -476,6 +554,8 @@ zonemap = {
         DESCRIPTION: "You're standing on the southern shore of the island, there are no boats or bridges.",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: ["up", "north"],
         DOWN: ["down", "south"],
         LEFT: ["left", "west"],
@@ -486,6 +566,8 @@ zonemap = {
         DESCRIPTION: "description",
         EXAMINATION: "examine",
         SOLVED: False,
+        ITEM: "None",
+        BOSS: None,
         UP: ["up", "north"],
         DOWN: ["down", "south"],
         LEFT: ["left", "west"],
@@ -494,8 +576,14 @@ zonemap = {
 }
 
 
-
 ## GAME INTERACTIVITY ##
+
+
+
+
+
+
+
 def print_location():
     current_location = zonemap[myPlayer.location]  # Fetch the location dictionary
     print("\n" + ("#" * (4 + len(current_location[ZONENAME]))))
@@ -503,12 +591,14 @@ def print_location():
     print("# " + current_location[DESCRIPTION] + " #")
     print("\n" + ("#" * (4 + len(current_location[ZONENAME]))))
 
+
 def prompt():
     sitrep()
     print("\n" + "==================")
     print("What would you like to do?")
     action = input("> ")
-    acceptable_actions = ["move", "go", "travel", "walk", "journey", "run", "quit", "inspect", "examine", "look", "peek", "interact"]
+    acceptable_actions = ["move", "go", "travel", "walk", "journey", "run", "quit", "inspect", "examine", "look",
+                          "peek", "interact", "equip"]
     while action.lower() not in acceptable_actions:
         print("Unknown action, please try again \n")
         action = input("> ")
@@ -518,6 +608,41 @@ def prompt():
         player_move(action.lower())
     elif action.lower() in ["inspect", "examine", "look", "peek", "interact"]:
         player_examine(action.lower())
+    elif action.lower() == "equip"
+        player_equip()
+
+
+
+def player_equip():
+    # print current items
+    print(f"You currently have {myPlayer.item}"
+          f"You're current equipped weapon is {myPlayer.equipped_weapon}")
+    item_to_equip = input("Which item would you like to equip?\n")
+    if item_to_equip in myPlayer.special_item:
+        print("Sorry, this is a special item, try again")
+        player_equip()
+    else:
+        # Equip the item
+        myPlayer.equipped_weapon = item_to_equip
+        print(f"You have equipped {item_to_equip} as your weapon")
+        
+        #Modify Player Stats based on equipped weapon
+        if item_to_equip.lower().endswith("sword"):
+            if item_to_equip.lower().startswith("Legendary"):
+                myPlayer.ap = myPlayer.ap * 1.5
+                print(f"{item_to_equip} equipped, Attack Points now {myPlayer.ap}")
+            else:
+                myPlayer.ap = myPlayer.ap * 1.2
+                print(f"{item_to_equip} equipped, Attack Points now {myPlayer.ap}")
+        elif item_to_equip.lower().endswith("wand"):
+            if item_to_equip.lower().startswith("Legendary"):
+                myPlayer.mp = myPlayer.mp * 1.5
+                print(f"{item_to_equip} equipped, Magic Points now {myPlayer.mp}")
+            else:
+                myPlayer.mp = myPlayer.mp * 1.2
+                print(f"{item_to_equip} equipped, Magic Points now {myPlayer.mp}")
+
+
 
 def player_move(myAction):
     print("Where would you like to move to?\n")
@@ -534,29 +659,62 @@ def player_move(myAction):
     if dest in ["down", "south"]:
         destination = zonemap[myPlayer.location][DOWN]
         movement_handler(destination)
+
+
 def movement_handler(destination):
     print("\n" + "You have moved to the " + destination + ".")
     myPlayer.location = destination
     print_location()
+
+
 def player_examine(action):
+    current_location = zonemap[myPlayer.location]
+
     if zonemap[myPlayer.location][SOLVED]:
         print("You have already completed this part of the Island.")
     else:
-        print("Looks like there's something you need to do here...")
-    print_location()
+        print(current_location[EXAMINATION])
 
+        # Check if there is an item in this location
+        if current_location[ITEM] != "None":
+            print("You find a " + current_location[ITEM] + "!")
+            myPlayer.item.append(zonemap[myPlayer.location][ITEM])
+            if current_location[ITEM] in myPlayer.special_item:
+                print("The " + current_location[ITEM] + " has been added to your Special Items Pouch for later use.")
+            else:
+                print(f"Would you like to equip the {current_location[ITEM]} as your weapon?")
+                temp_equip = input("> ")
+                if temp_equip.lower() = ["yes", "y"]
+                    myPlayer.equipped_weapon = current_location[ITEM]
+                elif temp_equip.lower() = ["no", "n"]
+                    print(f"No problem, your current weapon is {myPlayer.equipped_weapon}")
+                else:
+                    print("Invalid Entry, the item has been placed into your backpack, you may equip it later")
+                #todo depending on weapon type, increase attack points
 
+        else:
+            print("There are no items to collect here...")
 
+        # Check if there's a boss in this location
+        if current_location[BOSS] is not None:
+            print("You've encountered a: " + current_location[BOSS] + "!")
+            boss_fight()
 
 
 ## GAME FUNCTIONALITY ##
 
+def collect_item():
 
+
+
+def boss_fight():
+    #Todo - write code for boss fight
 
 def main_game_loop():
     while myPlayer.gameover is False:
         prompt()
         # here handle puzzles, boss, enemies etc
+
 
 def start_game():
     clear_screen()
@@ -574,7 +732,7 @@ def start_game():
 
     question2 = "Tell me " + player_name + ", what manner of being are you?\n"
     valid_jobs = ["warrior", "mage", "priest"]
-    question2added = ("You can play as any of the following: " + ", ".join(valid_jobs)+ "\n")
+    question2added = ("You can play as any of the following: " + ", ".join(valid_jobs) + "\n")
     for character in question2:
         sys.stdout.write(character)
         sys.stdout.flush()
@@ -587,6 +745,20 @@ def start_game():
 
     if player_job.lower() in valid_jobs:
         myPlayer.job = player_job
+        ## PLAYER STATS ##
+
+        if myPlayer.job == "warrior":
+            myPlayer.hp = 120
+            myPlayer.mp = 20
+            myPlayer.ap = 50
+        elif myPlayer.job == "mage":
+            myPlayer.hp = 20
+            myPlayer.mp = 120
+            myPlayer.ap = 30
+        elif myPlayer.job == "priest":
+            myPlayer.hp = 70
+            myPlayer.mp = 70
+            myPlayer.ap = 20
         print("You will be known on Lithuin Island as " + myPlayer.name + " the " + myPlayer.job + "!\n")
     else:
         while myPlayer.job.lower() not in valid_jobs:
@@ -594,19 +766,21 @@ def start_game():
             player_job = input("> ")
             if player_job.lower() in valid_jobs:
                 myPlayer.job = player_job
+                ## PLAYER STATS ##
+
+                if myPlayer.job == "warrior":
+                    myPlayer.hp = 120
+                    myPlayer.mp = 20
+                    myPlayer.ap = 50
+                elif myPlayer.job == "mage":
+                    myPlayer.hp = 20
+                    myPlayer.mp = 120
+                    myPlayer.ap = 30
+                elif myPlayer.job == "priest":
+                    myPlayer.hp = 70
+                    myPlayer.mp = 70
+                    myPlayer.ap = 20
                 print("You are now " + myPlayer.name + " the " + myPlayer.job)
-
-        ## PLAYER STATS ##
-
-        if myPlayer.job == "warrior":
-            myPlayer.hp = 120
-            myPlayer.mp = 20
-        elif myPlayer.job == "mage":
-            myPlayer.hp = 20
-            myPlayer.mp = 120
-        elif myPlayer.job == "priest":
-            myPlayer.hp = 70
-            myPlayer.mp = 70
 
     ## INTRODUCTION ##
 
@@ -616,8 +790,7 @@ def start_game():
         sys.stdout.flush()
         time.sleep(0.05)
 
-
-    speech1 = "Welcome to this Fantasy World! \n"
+    speech1 = "Welcome to Lithuin Island! \n"
     speech2 = "I hope it greets you well!\n"
     speech3 = "Just make sure you don't get too lost...\n"
     speech4 = "Heh... heh... heh...\n"
@@ -625,11 +798,11 @@ def start_game():
     for character in speech1:
         sys.stdout.write(character)
         sys.stdout.flush()
-        time.sleep(0.05)
+        time.sleep(0.1)
     for character in speech2:
         sys.stdout.write(character)
         sys.stdout.flush()
-        time.sleep(0.05)
+        time.sleep(0.1)
     for character in speech3:
         sys.stdout.write(character)
         sys.stdout.flush()
@@ -648,10 +821,3 @@ def start_game():
 
 
 title_screen()
-
-
-
-
-
-
-
