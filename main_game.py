@@ -21,22 +21,21 @@ screen_width = 100
 
 def sitrep():
     zone_name = zonemap.get(myPlayer.location, {}).get(ZONENAME, "Unknown Zone")
-    print("Location: " + zone_name)
-    print("Health: " + str(myPlayer.hp))
-    print("Magic Points: " + str(myPlayer.mp))
-    print("Current Weapon: " + myPlayer.equipped_weapon)
+    print("Location: " + zone_name + " | Health: " + str(myPlayer.hp) + " | Attack Points: " + str(myPlayer.ap))
 
     # Count the number of areas solved
     solved_count = sum(1 for solved in solved_places.values() if solved)
-    print("Areas Solved: " + str(solved_count))
+    print("Magic Points: " + str(
+        myPlayer.mp) + " | Current Weapon: " + myPlayer.equipped_weapon + " | Areas Solved: " + str(solved_count))
 
 
 ##### PLAYER SETUP #####
+
 class player:
     def __init__(self):
         self.equipped_weapon = "None"  # Weapon
         self.item = []
-        self.special_item = ["lighthouse key", "gourda castle key",]
+        self.special_item = ["lighthouse key", "gourda castle key", ]
         self.name = ""  # player name
         self.hp = 0  # health points
         self.mp = 0  # magic points
@@ -157,7 +156,7 @@ zonemap = {
     "a1": {
         ZONENAME: "WASTELANDa1",
         DESCRIPTION: "It's strange, this land before you. There is no life, nothing to see, just wasteland...",
-        EXAMINATION: "examine",
+        EXAMINATION: "This strange wasteland holds no treasure, you'd better return to the main Island",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -169,7 +168,7 @@ zonemap = {
     "b1": {
         ZONENAME: "SEAb1",
         DESCRIPTION: "You're standing on the northern shore of the island, there are no boats or bridges.",
-        EXAMINATION: "examine",
+        EXAMINATION: "You hear waves crashing on the beach. There's nothing else to do here",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -181,7 +180,7 @@ zonemap = {
     "c1": {
         ZONENAME: "SEAc1",
         DESCRIPTION: "You're standing on the northern shore of the island, there are no boats or bridges.",
-        EXAMINATION: "examine",
+        EXAMINATION: "Like the rest of the northern shore, there's not much to be done here.",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -193,7 +192,7 @@ zonemap = {
     "d1": {
         ZONENAME: "SEAd1",
         DESCRIPTION: "You're standing on the northern shore of the island, there are no boats or bridges.",
-        EXAMINATION: "examine",
+        EXAMINATION: "This northern shore has nothing for you to do here.",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -205,7 +204,7 @@ zonemap = {
     "e1": {
         ZONENAME: "WASTELANDe1",
         DESCRIPTION: "It's strange, this land before you. There is no life, nothing to see, just wasteland...",
-        EXAMINATION: "examine",
+        EXAMINATION: "This is a wasteland, there's nothing here. Try heading inland.",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -217,7 +216,7 @@ zonemap = {
     "a2": {
         ZONENAME: "SEAa2",
         DESCRIPTION: "You're standing on the western shore of the island, there are no boats or bridges.",
-        EXAMINATION: "examine",
+        EXAMINATION: "This western shore is nothing but sea and rocks. Head inland.",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -228,11 +227,11 @@ zonemap = {
     },
     "b2": {
         ZONENAME: "NORTH WEST DESSERT",
-        DESCRIPTION: "The ground shakes, as if something is under there. Sand spans as far as the eye can see, the odd cactus here and there.",
-        EXAMINATION: "examine",
+        DESCRIPTION: "Sand spans as far as the eye can see, the odd cactus here and there. The ground tremors lightly.",
+        EXAMINATION: "a Giant Sandworm erupts from the ground, and positions itself to attack",
         SOLVED: False,
-        ITEM: "None",
-        BOSS: None,
+        ITEM: "Lighthouse Key",
+        BOSS: "Sandworm",
         UP: "b1",
         DOWN: "b3",
         LEFT: "a2",
@@ -240,11 +239,11 @@ zonemap = {
     },
     "c2": {
         ZONENAME: "NORTH DESSERT",
-        DESCRIPTION: "Tiny mounds dot the sandy landscape, a thunderous sound of millions of tiny feet marching in unison is getting louder, as if coming from below the surface...",
-        EXAMINATION: "examine",
+        DESCRIPTION: "Tiny mounds dot the sand, a thunderous sound is getting louder, as if below the surface...",
+        EXAMINATION: "A torrent of Ants explode from the closest mounds! Get ready to fight!",
         SOLVED: False,
         ITEM: "None",
-        BOSS: None,
+        BOSS: "Fire Ant Army",
         UP: "c1",
         DOWN: "c3",
         LEFT: "b2",
@@ -255,7 +254,7 @@ zonemap = {
         DESCRIPTION: "A cool breeze feels refreshing, and something glimmers and twinkles, surrounded by palm tress",
         EXAMINATION: "examine",
         SOLVED: False,
-        ITEM: "None",
+        ITEM: "Restoring Liquid",
         BOSS: None,
         UP: "d1",
         DOWN: "d3",
@@ -265,7 +264,7 @@ zonemap = {
     "e2": {
         ZONENAME: "SEAe2",
         DESCRIPTION: "You're standing on the eastern shore of the island, there are no boats or bridges.",
-        EXAMINATION: "examine",
+        EXAMINATION: "To the west is the North East Dessert, all other directions lead to nothing.",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -277,7 +276,7 @@ zonemap = {
     "a3": {
         ZONENAME: "SEAa3",
         DESCRIPTION: "You're standing on the western shore of the island, there are no boats or bridges.",
-        EXAMINATION: "examine",
+        EXAMINATION: "West: North East Forrest. South: West Beach. And that's about it.",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -289,7 +288,7 @@ zonemap = {
     "b3": {
         ZONENAME: "NORTH WEST FORREST",
         DESCRIPTION: "This unexplored forrest may contain some mystery in the future, but for now it's just a forrest",
-        EXAMINATION: "examine",
+        EXAMINATION: "Birds tweet, insects crawl underfoot, and the light breeze is refreshing, but that's it.",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -301,10 +300,10 @@ zonemap = {
     "c3": {
         ZONENAME: "FARMLANDS",
         DESCRIPTION: "Local Farmers tend to their crops, and a scare crow stands silently in the field",
-        EXAMINATION: "examine",
+        EXAMINATION: "You approach the Scarecrow, and suddenly, it's head moves and it stares at you.",
         SOLVED: False,
         ITEM: "None",
-        BOSS: None,
+        BOSS: "Scarecrow",
         UP: "c2",
         DOWN: "c4",
         LEFT: "b3",
@@ -313,7 +312,7 @@ zonemap = {
     "d3": {
         ZONENAME: "NORTH EAST FORREST",
         DESCRIPTION: "This unexplored forrest may contain some mystery in the future, but for now it's just a forrest",
-        EXAMINATION: "examine",
+        EXAMINATION: "There's nothing going on here at the moment, perhaps the developer will do something later...",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -325,7 +324,7 @@ zonemap = {
     "e3": {
         ZONENAME: "SEAe3",
         DESCRIPTION: "You're standing on the eastern shore of the island, there are no boats or bridges.",
-        EXAMINATION: "examine",
+        EXAMINATION: "Nothing to see here, just the salty air. Try heading inland.",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -337,7 +336,7 @@ zonemap = {
     "a4": {
         ZONENAME: "WEST BEACH",
         DESCRIPTION: "This sandy beach on the western shore of Lithuin Island is great for getting a tan",
-        EXAMINATION: "examine",
+        EXAMINATION: "You walk along the beach, dig a few holes, and look under some rocks. Nothing!",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -349,7 +348,7 @@ zonemap = {
     "b4": {
         ZONENAME: "PLAINS",
         DESCRIPTION: "Gentle hills, fields of grass, and the occasional horse are all that can be seen here",
-        EXAMINATION: "examine",
+        EXAMINATION: "You approach a horse, but you spoke it and it kicks you in the head. Oh well...",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -360,10 +359,10 @@ zonemap = {
     },
     "c4": {
         ZONENAME: "CENTRAL FORREST",
-        DESCRIPTION: "The Central Forrest is in the middle of the Island of Lithuin. Tall tress create a canopy that blocks the sky, but causes the forrest floor to glisten with a green, almost magical glow. A strange mound of dirt a few steps away appears fairly fresh.",
-        EXAMINATION: "This is where you first woke up",
+        DESCRIPTION: "You awoke in the Central Forrest. But are you the first, or the last, to do so?",
+        EXAMINATION: "There is a mound of dirt, it's an buried knife.",
         SOLVED: False,
-        ITEM: "None",
+        ITEM: "Knife",
         BOSS: None,
         UP: "c3",
         DOWN: "c5",
@@ -373,7 +372,7 @@ zonemap = {
     "d4": {
         ZONENAME: "CAVE",
         DESCRIPTION: "This cave is dark, and smelly, but goes deep...",
-        EXAMINATION: "examine",
+        EXAMINATION: "You call into the cave, your voice echoes back. It's too scary to go any deeper... for now...'",
         ITEM: "None",
         BOSS: None,
         UP: "d3",
@@ -384,7 +383,7 @@ zonemap = {
     "e4": {
         ZONENAME: "WASTELANDe4",
         DESCRIPTION: "Nothing...a landscape of dust and more dust. No point going any further east...",
-        EXAMINATION: "examine",
+        EXAMINATION: "Nothing to see here, better head inland",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -396,7 +395,7 @@ zonemap = {
     "a5": {
         ZONENAME: "SEAa5",
         DESCRIPTION: "You're standing on the western shore of the island, there are no boats or bridges.",
-        EXAMINATION: "examine",
+        EXAMINATION: "Nothing to do here, better head towards the centre of the Island.",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -408,7 +407,7 @@ zonemap = {
     "b5": {
         ZONENAME: "HORIZON MOUNTAIN",
         DESCRIPTION: "A snow-capped peak that seems to touch the sky, and a treacherous climb...",
-        EXAMINATION: "examine",
+        EXAMINATION: "At some point you'll tacle this mountain, but not until the developer has coded it.'",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -420,7 +419,7 @@ zonemap = {
     "c5": {
         ZONENAME: "LUMBER TOWN",
         DESCRIPTION: "The biggest settlement on the Island, but a low population nonetheless",
-        EXAMINATION: "examine",
+        EXAMINATION: "Dreary faced inhabitants shuffle around the dirt street. Maybe this will get coded later...",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -431,8 +430,8 @@ zonemap = {
     },
     "d5": {
         ZONENAME: "GOURDA CASTLE",
-        DESCRIPTION: "Named after the singing lady who built it, not much else is known about Gourda Castle, no one has been in there for decades...",
-        EXAMINATION: "examine",
+        DESCRIPTION: "Not much is known about Gourda Castle, no one has been in there for decades...",
+        EXAMINATION: "The castle has not been coded yet, the developer may get to this in the future.",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -444,7 +443,7 @@ zonemap = {
     "e5": {
         ZONENAME: "SEAe5",
         DESCRIPTION: "You're standing on the eastern shore of the island, there are no boats or bridges.",
-        EXAMINATION: "examine",
+        EXAMINATION: "No boats, no bridges, better head inland again.",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -456,7 +455,7 @@ zonemap = {
     "a6": {
         ZONENAME: "SEAa6",
         DESCRIPTION: "You're standing on the western shore of the island, there are no boats or bridges.",
-        EXAMINATION: "examine",
+        EXAMINATION: "You're getting your bearings on this island now! But this isn't the way, head inland!",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -468,10 +467,10 @@ zonemap = {
     "b6": {
         ZONENAME: "LIGHTHOUSE",
         DESCRIPTION: "A tall, red and white striped lighthouse looks over the sea. The door requires a key",
-        EXAMINATION: "examine",
+        EXAMINATION: "Do you have the key? No? Then go find it!",
         SOLVED: False,
-        ITEM: "None",
-        BOSS: None,
+        ITEM: "Gourda Castle Key",
+        BOSS: "Cyclops",
         UP: "b5",
         DOWN: "b7",
         LEFT: "a6",
@@ -480,7 +479,7 @@ zonemap = {
     "c6": {
         ZONENAME: "SWAMP",
         DESCRIPTION: "A green, thick water covers the floor motionlessly, mangrove trees erupt from the silence",
-        EXAMINATION: "examine",
+        EXAMINATION: "...buzz....SLAP! That's right, a mosquito made you slap yourself. How do you feel now??!!'",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -492,7 +491,7 @@ zonemap = {
     "d6": {
         ZONENAME: "SOUTH EAST BEACH",
         DESCRIPTION: "This beach is rocky, Gourda Castle looms over it, and bones remain from unlucky travellers",
-        EXAMINATION: "examine",
+        EXAMINATION: "Gourda Castle looks huge from here, but there's nothing else of interest.",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -504,7 +503,7 @@ zonemap = {
     "e6": {
         ZONENAME: "SEAe6",
         DESCRIPTION: "You're standing on the eastern shore of the island, there are no boats or bridges.",
-        EXAMINATION: "examine",
+        EXAMINATION: "This would be a great place to watch the sunrise...but actually time is weird on the Island.",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -515,7 +514,7 @@ zonemap = {
     },
     "a7": {
         ZONENAME: "WASTELANDa7",
-        DESCRIPTION: "Desolate wasteland stretches as far as the eye can see. Theres nowhere to go to the south, or the west",
+        DESCRIPTION: "Desolate wasteland stretches away from you. Theres nowhere to go to the south, or the west",
         EXAMINATION: "examine",
         SOLVED: False,
         ITEM: "None",
@@ -579,11 +578,6 @@ zonemap = {
 ## GAME INTERACTIVITY ##
 
 
-
-
-
-
-
 def print_location():
     current_location = zonemap[myPlayer.location]  # Fetch the location dictionary
     print("\n" + ("#" * (4 + len(current_location[ZONENAME]))))
@@ -608,9 +602,8 @@ def prompt():
         player_move(action.lower())
     elif action.lower() in ["inspect", "examine", "look", "peek", "interact"]:
         player_examine(action.lower())
-    elif action.lower() == "equip"
+    elif action.lower() == "equip":
         player_equip()
-
 
 
 def player_equip():
@@ -625,8 +618,9 @@ def player_equip():
         # Equip the item
         myPlayer.equipped_weapon = item_to_equip
         print(f"You have equipped {item_to_equip} as your weapon")
-        
-        #Modify Player Stats based on equipped weapon
+
+        # Modify Player Stats based on equipped weapon
+        #todo add knife
         if item_to_equip.lower().endswith("sword"):
             if item_to_equip.lower().startswith("Legendary"):
                 myPlayer.ap = myPlayer.ap * 1.5
@@ -642,6 +636,9 @@ def player_equip():
                 myPlayer.mp = myPlayer.mp * 1.2
                 print(f"{item_to_equip} equipped, Magic Points now {myPlayer.mp}")
 
+        elif item_to_equip.lower() == "none":
+            myPlayer.mp = myPlayer.mp * 1
+            print(f"Nothing equipped, Magic Points now {myPlayer.mp} and Attack Points now {myPlayer.ap}")
 
 
 def player_move(myAction):
@@ -662,7 +659,8 @@ def player_move(myAction):
 
 
 def movement_handler(destination):
-    print("\n" + "You have moved to the " + destination + ".")
+    destination_name = zonemap[destination][ZONENAME]
+    print("\n" + "You have moved to the " + destination_name + ".")
     myPlayer.location = destination
     print_location()
 
@@ -684,13 +682,13 @@ def player_examine(action):
             else:
                 print(f"Would you like to equip the {current_location[ITEM]} as your weapon?")
                 temp_equip = input("> ")
-                if temp_equip.lower() = ["yes", "y"]
+                if temp_equip.lower() in ["yes", "y"]:
                     myPlayer.equipped_weapon = current_location[ITEM]
-                elif temp_equip.lower() = ["no", "n"]
+                elif temp_equip.lower() in ["no", "n"]:
                     print(f"No problem, your current weapon is {myPlayer.equipped_weapon}")
                 else:
                     print("Invalid Entry, the item has been placed into your backpack, you may equip it later")
-                #todo depending on weapon type, increase attack points
+                # todo depending on weapon type, increase attack points
 
         else:
             print("There are no items to collect here...")
@@ -703,12 +701,12 @@ def player_examine(action):
 
 ## GAME FUNCTIONALITY ##
 
-def collect_item():
-
-
 
 def boss_fight():
-    #Todo - write code for boss fight
+    # Todo - write code for boss fight
+    print("BOSS FIGHT CODE NOT WRITTEN")
+    sys.exit()
+
 
 def main_game_loop():
     while myPlayer.gameover is False:
@@ -745,17 +743,15 @@ def start_game():
 
     if player_job.lower() in valid_jobs:
         myPlayer.job = player_job
-        ## PLAYER STATS ##
-
-        if myPlayer.job == "warrior":
+        if myPlayer.job.lower() == "warrior":
             myPlayer.hp = 120
             myPlayer.mp = 20
             myPlayer.ap = 50
-        elif myPlayer.job == "mage":
+        elif myPlayer.job.lower() == "mage":
             myPlayer.hp = 20
             myPlayer.mp = 120
             myPlayer.ap = 30
-        elif myPlayer.job == "priest":
+        elif myPlayer.job.lower() == "priest":
             myPlayer.hp = 70
             myPlayer.mp = 70
             myPlayer.ap = 20
@@ -766,21 +762,19 @@ def start_game():
             player_job = input("> ")
             if player_job.lower() in valid_jobs:
                 myPlayer.job = player_job
-                ## PLAYER STATS ##
-
-                if myPlayer.job == "warrior":
+                if myPlayer.job.lower() == "warrior":
                     myPlayer.hp = 120
                     myPlayer.mp = 20
                     myPlayer.ap = 50
-                elif myPlayer.job == "mage":
+                elif myPlayer.job.lower() == "mage":
                     myPlayer.hp = 20
                     myPlayer.mp = 120
                     myPlayer.ap = 30
-                elif myPlayer.job == "priest":
+                elif myPlayer.job.lower() == "priest":
                     myPlayer.hp = 70
                     myPlayer.mp = 70
                     myPlayer.ap = 20
-                print("You are now " + myPlayer.name + " the " + myPlayer.job)
+                print("You will be known on Lithuin Island as " + myPlayer.name + " the " + myPlayer.job + "!\n")
 
     ## INTRODUCTION ##
 
@@ -791,9 +785,9 @@ def start_game():
         time.sleep(0.05)
 
     speech1 = "Welcome to Lithuin Island! \n"
-    speech2 = "I hope it greets you well!\n"
-    speech3 = "Just make sure you don't get too lost...\n"
-    speech4 = "Heh... heh... heh...\n"
+    speech2 = "The Central Forrest is in the middle of the Island of Lithuin. Tall tress create a canopy that blocks \n"
+    speech3 = "the sky, but causes the forrest floor to glisten with a green, almost magical glow. A strange mound \n"
+    speech4 = "of dirt a few steps away appears fairly fresh.\n"
 
     for character in speech1:
         sys.stdout.write(character)
