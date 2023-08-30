@@ -30,7 +30,6 @@ def sitrep():
 
 
 ##### PLAYER SETUP #####
-
 class player:
     def __init__(self):
         self.equipped_weapon = "None"  # Weapon
@@ -635,7 +634,7 @@ def player_equip():
         print(f"You have equipped {item_to_equip} as your weapon")
 
         # Modify Player Stats based on equipped weapon
-        #todo add knife
+
         if item_to_equip.lower().endswith("sword"):
             if item_to_equip.lower().startswith("Legendary"):
                 myPlayer.ap = myPlayer.ap * 1.5
