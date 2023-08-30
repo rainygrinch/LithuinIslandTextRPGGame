@@ -963,6 +963,7 @@ def start_game():
                     myPlayer.ap = 20
                 print("You will be known on Lithuin Island as " + myPlayer.name + " the " + myPlayer.job + "!\n")
 
+
     ## INTRODUCTION ##
 
     question3 = "Welcome, " + player_name + " the " + player_job + ".\n"
