@@ -30,7 +30,8 @@ def sitrep():
 
 
 ##### PLAYER SETUP #####
-class player:
+
+class Player:
     def __init__(self):
         self.equipped_weapon = "None"  # Weapon
         self.item = []
@@ -45,30 +46,31 @@ class player:
         self.num_health_pots = 2
         self.health_pot_heal_amount = 25
         self.gameover = False
+        self.weapon_mult = 1
 
 
-myPlayer = player()
+myPlayer = Player()
 
 
 ##### TITLE SELECTIONS #####
 
 def title_screen_selections():
     option = input("> ")
-    if option.lower() == ("play"):
+    if option.lower() == "play":
         start_game()  # placeholder until code is written
-    elif option.lower() == ("help"):
+    elif option.lower() == "help":
         help_menu()  # help menu
-    elif option.lower() == ("quit"):
+    elif option.lower() == "quit":
         sys.exit()  # system exit game
 
     while option.lower() not in ["play", "help", "quit"]:
         print("Please enter a valid command.")
         option = input("> ")
-        if option.lower() == ("play"):
+        if option.lower() == "play":
             start_game()  # placeholder until code is written (second attempt)
-        elif option.lower() == ("help"):
+        elif option.lower() == "help":
             help_menu()  # help menu (second attempt)
-        elif option.lower() == ("quit"):
+        elif option.lower() == "quit":
             sys.exit()  # system exit game (second attempt)
 
 
@@ -145,6 +147,13 @@ UP = "up", "north"
 DOWN = "down", "south"
 LEFT = "left", "west"
 RIGHT = "right", "east"
+
+w_ap_reset = 50
+w_mp_reset = 20
+m_ap_reset = 30
+m_mp_reset = 60
+p_ap_reset = 20
+p_mp_reset = 40
 
 solved_places = {"a1": False, "b1": False, "c1": False, "d1": False, "e1": False,
                  "a2": False, "b2": False, "c2": False, "d2": False, "e2": False,
@@ -279,7 +288,7 @@ zonemap = {
     "a3": {
         ZONENAME: "SEAa3",
         DESCRIPTION: "You're standing on the western shore of the island, there are no boats or bridges.",
-        EXAMINATION: "West: North East Forrest. South: West Beach. And that's about it.",
+        EXAMINATION: "West: North East Forest. South: West Beach. And that's about it.",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
@@ -289,8 +298,8 @@ zonemap = {
         RIGHT: "b3",
     },
     "b3": {
-        ZONENAME: "NORTH WEST FORREST",
-        DESCRIPTION: "This unexplored forrest may contain some mystery in the future, but for now it's just a forrest",
+        ZONENAME: "NORTH WEST FOREST",
+        DESCRIPTION: "This unexplored forest may contain some mystery in the future, but for now it's just a forest",
         EXAMINATION: "Birds tweet, insects crawl underfoot, and the light breeze is refreshing, but that's it.",
         SOLVED: False,
         ITEM: "None",
@@ -315,8 +324,8 @@ zonemap = {
         RIGHT: "d3",
     },
     "d3": {
-        ZONENAME: "NORTH EAST FORREST",
-        DESCRIPTION: "This unexplored forrest may contain some mystery in the future, but for now it's just a forrest",
+        ZONENAME: "NORTH EAST FOREST",
+        DESCRIPTION: "This unexplored forest may contain some mystery in the future, but for now it's just a forest",
         EXAMINATION: "There's nothing going on here at the moment, perhaps the developer will do something later...",
         SOLVED: False,
         ITEM: "None",
@@ -355,7 +364,7 @@ zonemap = {
         DESCRIPTION: "Gentle hills, fields of grass, and the occasional horse are all that can be seen here",
         EXAMINATION: "You approach a horse, but you spoke it and it kicks you in the head. Oh well...",
         SOLVED: False,
-        ITEM: "None",
+        ITEM: "Legendary Broad Sword",
         BOSS: None,
         UP: "b3",
         DOWN: "b5",
@@ -363,9 +372,9 @@ zonemap = {
         RIGHT: "c4",
     },
     "c4": {
-        ZONENAME: "CENTRAL FORREST",
-        DESCRIPTION: "You awoke in the Central Forrest. But are you the first, or the last, to do so?",
-        EXAMINATION: "There is a mound of dirt, it's an buried knife.",
+        ZONENAME: "CENTRAL FOREST",
+        DESCRIPTION: "You awoke in the Central Forest. But are you the first, or the last, to do so?",
+        EXAMINATION: "There is a fresh mound of dirt",
         SOLVED: False,
         ITEM: "Knife",
         BOSS: None,
@@ -606,56 +615,92 @@ def prompt():
     print("What would you like to do?")
     action = input("> ")
     acceptable_actions = ["move", "go", "travel", "walk", "journey", "run", "quit", "inspect", "examine", "look",
-                          "peek", "interact", "equip"]
+                          "peek", "interact", "equip", "potion"]
     while action.lower() not in acceptable_actions:
         print("Unknown action, please try again \n")
         action = input("> ")
     if action.lower() == "quit":
         sys.exit()
     elif action.lower() in ["move", "go", "travel", "walk", "journey", "run"]:
-        player_move(action.lower())
+        player_move()
     elif action.lower() in ["inspect", "examine", "look", "peek", "interact"]:
-        player_examine(action.lower())
+        player_examine()
+    elif action.lower().endswith("potion"):
+        use_potion()
     elif action.lower() == "equip":
         player_equip()
 
 
 def player_equip():
+
+    sword_leg_mult = 2
+    sword_mult = 1.5
+    knife_leg_mult = 1.5
+    knife_mult = 1.2
+    wand_leg_mult = 5
+    wand_mult = 3
+
+    if myPlayer.job.lower() == "warrior":
+        myPlayer.ap = w_ap_reset
+        myPlayer.mp = w_mp_reset
+    elif myPlayer.job.lower() == "mage":
+        myPlayer.ap = w_ap_reset
+        myPlayer.mp = w_mp_reset
+    elif myPlayer.job.lower() == "priest":
+        myPlayer.ap = p_ap_reset
+        myPlayer.mp = p_mp_reset
+
     # print current items
     print(f"You currently have {myPlayer.item}"
-          f"You're current equipped weapon is {myPlayer.equipped_weapon}")
+          f"You're current equipped weapon is {myPlayer.equipped_weapon}\n")
     item_to_equip = input("Which item would you like to equip?\n")
     if item_to_equip in myPlayer.special_item:
         print("Sorry, this is a special item, try again")
         player_equip()
     else:
         # Equip the item
-        myPlayer.equipped_weapon = item_to_equip
-        print(f"You have equipped {item_to_equip} as your weapon")
+        if item_to_equip in myPlayer.item:
+            myPlayer.equipped_weapon = item_to_equip
+            print(f"You have equipped {item_to_equip} as your weapon")
 
-        # Modify Player Stats based on equipped weapon
+            # Modify Player Stats based on equipped weapon
 
-        if item_to_equip.lower().endswith("sword"):
-            if item_to_equip.lower().startswith("Legendary"):
-                myPlayer.ap = myPlayer.ap * 1.5
-                print(f"{item_to_equip} equipped, Attack Points now {myPlayer.ap}")
-            else:
-                myPlayer.ap = myPlayer.ap * 1.2
-                print(f"{item_to_equip} equipped, Attack Points now {myPlayer.ap}")
-        elif item_to_equip.lower().endswith("wand"):
-            if item_to_equip.lower().startswith("Legendary"):
-                myPlayer.mp = myPlayer.mp * 1.5
-                print(f"{item_to_equip} equipped, Magic Points now {myPlayer.mp}")
-            else:
-                myPlayer.mp = myPlayer.mp * 1.2
-                print(f"{item_to_equip} equipped, Magic Points now {myPlayer.mp}")
+            if item_to_equip.lower().endswith("sword"):
+                if item_to_equip.lower().startswith("Legendary"):
+                    myPlayer.ap = myPlayer.ap * sword_leg_mult
+                    myPlayer.weapon_mult = sword_leg_mult
+                    print(f"{item_to_equip} equipped, Attack Points now {myPlayer.ap}")
+                else:
+                    myPlayer.ap = myPlayer.ap * sword_mult
+                    myPlayer.weapon_mult = sword_mult
+                    print(f"{item_to_equip} equipped, Attack Points now {myPlayer.ap}")
+            elif item_to_equip.lower().endswith("knife"):
+                if item_to_equip.lower().startswith("Legendary"):
+                    myPlayer.ap = myPlayer.ap * knife_leg_mult
+                    myPlayer.weapon_mult = knife_leg_mult
+                    print(f"{item_to_equip} equipped, Attack Points now {myPlayer.ap}")
+                else:
+                    myPlayer.ap = myPlayer.ap * knife_mult
+                    myPlayer.weapon_mult = knife_mult
+                    print(f"{item_to_equip} equipped, Attack Points now {myPlayer.ap}")
+            elif item_to_equip.lower().endswith("wand"):
+                if item_to_equip.lower().startswith("Legendary"):
+                    myPlayer.mp = myPlayer.mp * wand_leg_mult
+                    myPlayer.weapon_mult = wand_leg_mult
+                    print(f"{item_to_equip} equipped, Magic Points now {myPlayer.mp}")
+                else:
+                    myPlayer.mp = myPlayer.mp * wand_mult
+                    myPlayer.weapon_mult = wand_mult
+                    print(f"{item_to_equip} equipped, Magic Points now {myPlayer.mp}")
 
-        elif item_to_equip.lower() == "none":
-            myPlayer.mp = myPlayer.mp * 1
-            print(f"Nothing equipped, Magic Points now {myPlayer.mp} and Attack Points now {myPlayer.ap}")
+            elif item_to_equip.lower() == "none":
+                myPlayer.mp = myPlayer.mp * 1
+                print(f"Nothing equipped, Magic Points now {myPlayer.mp} and Attack Points now {myPlayer.ap}")
+        else:
+            print(f"Sorry, you don't have a {item_to_equip}")
+            player_equip()
 
-
-def player_move(myAction):
+def player_move():
     print("Where would you like to move to?\n")
     dest = input("> ")
     if dest in ["up", "north"]:
@@ -679,9 +724,19 @@ def movement_handler(destination):
     print_location()
 
 
-def player_examine(action):
+def player_examine():
+    sword_leg_mult_exam = 2
+    sword_mult_exam = 1.5
+    knife_leg_mult_exam = 1.5
+    knife_mult_exam = 1.2
+    wand_leg_mult_exam = 5
+    wand_mult_exam = 3
+
+
     current_location = zonemap[myPlayer.location]
 
+    if current_location[ITEM] == "none" and current_location[BOSS] == "none":
+        zonemap[myPlayer.location][SOLVED] = True
     if zonemap[myPlayer.location][SOLVED]:
         print("You have already completed this part of the Island.")
     else:
@@ -698,11 +753,45 @@ def player_examine(action):
                 temp_equip = input("> ")
                 if temp_equip.lower() in ["yes", "y"]:
                     myPlayer.equipped_weapon = current_location[ITEM]
+                    item_to_equip_exam = myPlayer.equipped_weapon
+                    if item_to_equip_exam.lower().endswith("sword"):
+                        if item_to_equip_exam.lower().startswith("Legendary"):
+                            myPlayer.ap = myPlayer.ap * sword_leg_mult_exam
+                            myPlayer.weapon_mult = sword_leg_mult_exam
+                            print(f"{item_to_equip_exam} equipped, Attack Points now {myPlayer.ap}")
+                        else:
+                            myPlayer.ap = myPlayer.ap * sword_mult_exam
+                            myPlayer.weapon_mult = sword_mult_exam
+                            print(f"{item_to_equip_exam} equipped, Attack Points now {myPlayer.ap}")
+                    elif item_to_equip_exam.lower().endswith("knife"):
+                        if item_to_equip_exam.lower().startswith("Legendary"):
+                            myPlayer.ap = myPlayer.ap * knife_leg_mult_exam
+                            myPlayer.weapon_mult = knife_leg_mult_exam
+                            print(f"{item_to_equip_exam} equipped, Attack Points now {myPlayer.ap}")
+                        else:
+                            myPlayer.ap = myPlayer.ap * knife_mult_exam
+                            myPlayer.weapon_mult = knife_mult_exam
+                            print(f"{item_to_equip_exam} equipped, Attack Points now {myPlayer.ap}")
+                    elif item_to_equip_exam.lower().endswith("wand"):
+                        if item_to_equip_exam.lower().startswith("Legendary"):
+                            myPlayer.mp = myPlayer.mp * wand_leg_mult_exam
+                            myPlayer.weapon_mult = wand_leg_mult_exam
+                            print(f"{item_to_equip_exam} equipped, Magic Points now {myPlayer.mp}")
+                        else:
+                            myPlayer.mp = myPlayer.mp * wand_mult_exam
+                            myPlayer.weapon_mult = wand_mult_exam
+                            print(f"{item_to_equip_exam} equipped, Magic Points now {myPlayer.mp}")
+
+                    elif item_to_equip_exam.lower() == "none":
+                        myPlayer.mp = myPlayer.mp * 1
+
+                        print(f"Nothing equipped, Magic Points now {myPlayer.mp} and Attack Points now {myPlayer.ap}")
                 elif temp_equip.lower() in ["no", "n"]:
                     print(f"No problem, your current weapon is {myPlayer.equipped_weapon}")
                 else:
                     print("Invalid Entry, the item has been placed into your backpack, you may equip it later")
-                # todo depending on weapon type, increase attack points
+            current_location[ITEM] = "None"
+
 
         else:
             print("There are no items to collect here...")
@@ -710,20 +799,31 @@ def player_examine(action):
         # Check if there's a boss in this location
         if current_location[BOSS] is not None:
             print("You've encountered a " + current_location[BOSS] + "!")
-            boss_fight(current_location[BOSS])
+            boss_fight()
 
 
 ## GAME FUNCTIONALITY ##
 
 
-def boss_fight(boss_name):
+def boss_fight():
     clear_screen()
+    boss_location = myPlayer.location
     boss_name = zonemap[myPlayer.location][BOSS]
     boss_hp = zonemap[myPlayer.location][BOSSHEALTH]
     boss_ap = zonemap[myPlayer.location][BOSSATTACK]
-    print(f"You've encountered a {boss_name}!")
 
     while boss_hp > 0 and myPlayer.hp > 0:
+
+        # Boss Info
+
+        print(f"Enemy: {boss_name.upper()} | HP: {boss_hp} | AP: {boss_ap}")
+        print("###################################################")
+        print(f"{myPlayer.name.upper()} | Health Points: {myPlayer.hp}")
+        print(f"Weapon: {myPlayer.equipped_weapon.upper()} | Magic Points: {myPlayer.mp}")
+        print(f"Weapon Multiplier: {myPlayer.weapon_mult} | AP: {myPlayer.ap}")
+        print(f"Health Potions: {myPlayer.num_health_pots}")
+        print("###################################################")
+
         # Player's turn
         print("What would you like to do?")
         print("Attack, Use Magic, Use Potion")
@@ -733,10 +833,10 @@ def boss_fight(boss_name):
         elif choice.lower() == "attack":
             player_attack = random.randint(1, myPlayer.ap)
             boss_hp -= player_attack
-            print(f"You attack the {boss_name} for {player_attack} damage.")
+            print(f"You attack the {boss_name.upper()} for {player_attack} damage.")
 
             if boss_hp <= 0:
-                print(f"You defeated the {boss_name}!")
+                print(f"You defeated the {boss_name.upper()}!")
                 break
         elif choice.lower() == "magic":
             player_magic = random.randint(1, myPlayer.mp)
@@ -748,22 +848,48 @@ def boss_fight(boss_name):
                 break
 
             # Boss's turn
-            boss_attack = random.randint(1, boss_ap)
-            myPlayer.hp -= boss_attack
-            print(f"The {boss_name} attacks you for {boss_attack} damage.")
+        boss_attack = random.randint(1, boss_ap)
+        myPlayer.hp -= boss_attack
+        print(f"The {boss_name} attacks you for {boss_attack} damage.")
 
-            if myPlayer.hp <= 0:
-                print("You've been defeated!")
-                myPlayer.gameover = True
-                break
+        if myPlayer.hp <= 0:
+            print("You've been defeated!")
+            sitrep()
+            myPlayer.gameover = True
+            break
+
 
     # After the battle
     if boss_hp <= 0:
-        # Give rewards, update player stats, etc.
-        pass
+
+        solved_places[boss_location] = True
+        myPlayer.num_health_pots += 1
+        print(f"You have received a Health Potion")
+
+        sitrep()
     else:
-        # Handle the player's defeat, e.g., game over or other consequences
-        pass
+        print(f"You died fighting the {boss_name}")
+        print("Would you like to play again? (Yes/No)")
+        restart = input("> ")
+        if restart.lower() == "yes":
+            start_game()
+        elif restart.lower() == "no":
+            print(f"The final status of {myPlayer.name} the {myPlayer.job}")
+            sitrep()
+            print("")
+            print("Press any key to exit: ")
+            input()
+        else:
+            print("Invalid answer, would you like to restart the game (Yes/No)")
+            restart = input("> ")
+            if restart.lower() == "yes":
+                start_game()
+            elif restart.lower() == "no":
+                print(f"The final status of {myPlayer.name} the {myPlayer.job}")
+                sitrep()
+                print("")
+                print("Press any key to exit: ")
+                input()
 
     # Continue with the main game loop
     main_game_loop()
@@ -810,11 +936,11 @@ def start_game():
             myPlayer.ap = 50
         elif myPlayer.job.lower() == "mage":
             myPlayer.hp = 20
-            myPlayer.mp = 120
+            myPlayer.mp = 60
             myPlayer.ap = 30
         elif myPlayer.job.lower() == "priest":
             myPlayer.hp = 70
-            myPlayer.mp = 70
+            myPlayer.mp = 40
             myPlayer.ap = 20
         print("You will be known on Lithuin Island as " + myPlayer.name + " the " + myPlayer.job + "!\n")
     else:
@@ -846,8 +972,8 @@ def start_game():
         time.sleep(0.05)
 
     speech1 = "Welcome to Lithuin Island! \n"
-    speech2 = "The Central Forrest is in the middle of the Island of Lithuin. Tall tress create a canopy that blocks \n"
-    speech3 = "the sky, but causes the forrest floor to glisten with a green, almost magical glow. A strange mound \n"
+    speech2 = "The Central Forest is in the middle of the Island of Lithuin. Tall trees create a canopy that blocks \n"
+    speech3 = "the sky, but causes the forest floor to glisten with a green, almost magical glow. A strange mound \n"
     speech4 = "of dirt a few steps away appears fairly fresh.\n"
 
     for character in speech1:
