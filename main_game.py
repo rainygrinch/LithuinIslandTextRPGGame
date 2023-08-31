@@ -35,7 +35,8 @@ class Player:
     def __init__(self):
         self.equipped_weapon = "None"  # Weapon
         self.item = []
-        self.special_item = ["lighthouse key", "gourda castle key", ]
+        self.special_item_inventory = []
+        self.special_item_available = ["lighthouse key", "gourda castle key", "restoring liquid"]
         self.name = ""  # player name
         self.hp = 0  # health points
         self.mp = 0  # magic points
@@ -44,7 +45,7 @@ class Player:
         self.job = ""  # player class type
         self.location = "c4"
         self.num_health_pots = 2
-        self.health_pot_heal_amount = 25
+        self.health_pot_heal_amount = 40
         self.gameover = False
         self.weapon_mult = 1
 
@@ -154,6 +155,7 @@ m_ap_reset = 30
 m_mp_reset = 60
 p_ap_reset = 20
 p_mp_reset = 40
+restore_liquid_amount = 70
 
 solved_places = {"a1": False, "b1": False, "c1": False, "d1": False, "e1": False,
                  "a2": False, "b2": False, "c2": False, "d2": False, "e2": False,
@@ -172,6 +174,8 @@ zonemap = {
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "",
         DOWN: "a2",
         LEFT: "",
@@ -184,6 +188,8 @@ zonemap = {
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "",
         DOWN: "b2",
         LEFT: "a1",
@@ -196,6 +202,8 @@ zonemap = {
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "",
         DOWN: "c2",
         LEFT: "b1",
@@ -208,6 +216,8 @@ zonemap = {
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "",
         DOWN: "d2",
         LEFT: "c1",
@@ -220,6 +230,8 @@ zonemap = {
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "",
         DOWN: "e2",
         LEFT: "d1",
@@ -232,6 +244,8 @@ zonemap = {
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "a1",
         DOWN: "a3",
         LEFT: "",
@@ -244,6 +258,8 @@ zonemap = {
         SOLVED: False,
         ITEM: "Lighthouse Key",
         BOSS: "Sandworm",
+        BOSSATTACK: 50,
+        BOSSHEALTH: 150,
         UP: "b1",
         DOWN: "b3",
         LEFT: "a2",
@@ -256,6 +272,8 @@ zonemap = {
         SOLVED: False,
         ITEM: "None",
         BOSS: "Fire Ant Army",
+        BOSSATTACK: 10,
+        BOSSHEALTH: 100,
         UP: "c1",
         DOWN: "c3",
         LEFT: "b2",
@@ -263,11 +281,13 @@ zonemap = {
     },
     "d2": {
         ZONENAME: "NORTH EAST DESSERT",
-        DESCRIPTION: "A cool breeze feels refreshing, and something glimmers and twinkles, surrounded by palm tress",
-        EXAMINATION: "examine",
+        DESCRIPTION: "A cool breeze feels refreshing, and something glimmers and twinkles, surrounded by palm trees",
+        EXAMINATION: "You take a vial of liquid from the oasis, you can feel it has magical, restorative powers!",
         SOLVED: False,
         ITEM: "Restoring Liquid",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "d1",
         DOWN: "d3",
         LEFT: "c2",
@@ -280,6 +300,8 @@ zonemap = {
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "e1",
         DOWN: "e3",
         LEFT: "c2",
@@ -292,6 +314,8 @@ zonemap = {
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "a2",
         DOWN: "a4",
         LEFT: "",
@@ -299,11 +323,13 @@ zonemap = {
     },
     "b3": {
         ZONENAME: "NORTH WEST FOREST",
-        DESCRIPTION: "This unexplored forest may contain some mystery in the future, but for now it's just a forest",
-        EXAMINATION: "Birds tweet, insects crawl underfoot, and the light breeze is refreshing, but that's it.",
+        DESCRIPTION: "Silence... Sticky strands of web dominate the canopy. Cocooned shapes hand from the trees.",
+        EXAMINATION: "You look up, and out of the corner of your eye a huge shape scuttles into an attack position...",
         SOLVED: False,
         ITEM: "None",
-        BOSS: None,
+        BOSS: "Giant Spider",
+        BOSSATTACK: 60,
+        BOSSHEALTH: 60,
         UP: "b2",
         DOWN: "b4",
         LEFT: "a3",
@@ -311,8 +337,8 @@ zonemap = {
     },
     "c3": {
         ZONENAME: "FARMLANDS",
-        DESCRIPTION: "Local Farmers tend to their crops, and a scare crow stands silently in the field",
-        EXAMINATION: "You approach the Scarecrow, and suddenly, it's head moves and it stares at you.",
+        DESCRIPTION: "Local Farmers tend to their crops, and a scarecrow stands silently in the field",
+        EXAMINATION: "You approach the Scarecrow, and suddenly, its head moves and it stares at you.",
         SOLVED: False,
         ITEM: "None",
         BOSS: "Scarecrow",
@@ -325,11 +351,13 @@ zonemap = {
     },
     "d3": {
         ZONENAME: "NORTH EAST FOREST",
-        DESCRIPTION: "This unexplored forest may contain some mystery in the future, but for now it's just a forest",
+        DESCRIPTION: "This unexplored forest may contain some mystery in the future, but for now, it's just a forest",
         EXAMINATION: "There's nothing going on here at the moment, perhaps the developer will do something later...",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "d2",
         DOWN: "d4",
         LEFT: "c3",
@@ -342,6 +370,8 @@ zonemap = {
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "d2",
         DOWN: "d4",
         LEFT: "c3",
@@ -350,10 +380,12 @@ zonemap = {
     "a4": {
         ZONENAME: "WEST BEACH",
         DESCRIPTION: "This sandy beach on the western shore of Lithuin Island is great for getting a tan",
-        EXAMINATION: "You walk along the beach, dig a few holes, and look under some rocks. Nothing!",
+        EXAMINATION: "You walk along the beach, dig a few holes, and look under some rocks...",
         SOLVED: False,
-        ITEM: "None",
+        ITEM: "potion",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "a3",
         DOWN: "a5",
         LEFT: "",
@@ -364,8 +396,10 @@ zonemap = {
         DESCRIPTION: "Gentle hills, fields of grass, and the occasional horse are all that can be seen here",
         EXAMINATION: "You approach a horse, but you spoke it and it kicks you in the head. Oh well...",
         SOLVED: False,
-        ITEM: "Legendary Broad Sword",
+        ITEM: "None",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "b3",
         DOWN: "b5",
         LEFT: "a4",
@@ -378,6 +412,8 @@ zonemap = {
         SOLVED: False,
         ITEM: "Knife",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "c3",
         DOWN: "c5",
         LEFT: "b4",
@@ -387,8 +423,10 @@ zonemap = {
         ZONENAME: "CAVE",
         DESCRIPTION: "This cave is dark, and smelly, but goes deep...",
         EXAMINATION: "You call into the cave, your voice echoes back. It's too scary to go any deeper... for now...'",
-        ITEM: "None",
+        ITEM: "Legendary Battle Sword",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "d3",
         DOWN: "d5",
         LEFT: "c4",
@@ -401,6 +439,8 @@ zonemap = {
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "e3",
         DOWN: "e5",
         LEFT: "d4",
@@ -413,6 +453,8 @@ zonemap = {
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "a4",
         DOWN: "a6",
         LEFT: "",
@@ -421,10 +463,12 @@ zonemap = {
     "b5": {
         ZONENAME: "HORIZON MOUNTAIN",
         DESCRIPTION: "A snow-capped peak that seems to touch the sky, and a treacherous climb...",
-        EXAMINATION: "At some point you'll tacle this mountain, but not until the developer has coded it.'",
+        EXAMINATION: "At some point you'll tackle this mountain, but not until the developer has coded it.'",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "b4",
         DOWN: "b6",
         LEFT: "a5",
@@ -437,6 +481,8 @@ zonemap = {
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "c4",
         DOWN: "c6",
         LEFT: "b5",
@@ -445,10 +491,12 @@ zonemap = {
     "d5": {
         ZONENAME: "GOURDA CASTLE",
         DESCRIPTION: "Not much is known about Gourda Castle, no one has been in there for decades...",
-        EXAMINATION: "The castle has not been coded yet, the developer may get to this in the future.",
+        EXAMINATION: "A single, giant eye emerges from the darkness... every footstep tumbles the ground...",
         SOLVED: False,
         ITEM: "None",
-        BOSS: None,
+        BOSS: "Cyclops",
+        BOSSATTACK: 50,  # Placeholder with value 0
+        BOSSHEALTH: 150,  # Placeholder with value 0
         UP: "d4",
         DOWN: "d6",
         LEFT: "c5",
@@ -461,6 +509,8 @@ zonemap = {
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "e4",
         DOWN: "e6",
         LEFT: "d5",
@@ -473,6 +523,8 @@ zonemap = {
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "a5",
         DOWN: "a7",
         LEFT: "",
@@ -484,7 +536,9 @@ zonemap = {
         EXAMINATION: "Do you have the key? No? Then go find it!",
         SOLVED: False,
         ITEM: "Gourda Castle Key",
-        BOSS: "Cyclops",
+        BOSS: "Old Wizard",
+        BOSSATTACK: 90,  # Placeholder with value 0
+        BOSSHEALTH: 100,  # Placeholder with value 0
         UP: "b5",
         DOWN: "b7",
         LEFT: "a6",
@@ -495,8 +549,10 @@ zonemap = {
         DESCRIPTION: "A green, thick water covers the floor motionlessly, mangrove trees erupt from the silence",
         EXAMINATION: "...buzz....SLAP! That's right, a mosquito made you slap yourself. How do you feel now??!!'",
         SOLVED: False,
-        ITEM: "None",
-        BOSS: None,
+        ITEM: "Basic Wand",
+        BOSS: "Skeleton",
+        BOSSATTACK: 20,  # Placeholder with value 0
+        BOSSHEALTH: 60,  # Placeholder with value 0
         UP: "c5",
         DOWN: "c7",
         LEFT: "b6",
@@ -509,6 +565,8 @@ zonemap = {
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "d5",
         DOWN: "d7",
         LEFT: "c6",
@@ -521,71 +579,69 @@ zonemap = {
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "e5",
-        DOWN: "e7",
+        DOWN: "",
         LEFT: "d6",
         RIGHT: "",
     },
     "a7": {
-        ZONENAME: "WASTELANDa7",
-        DESCRIPTION: "Desolate wasteland stretches away from you. Theres nowhere to go to the south, or the west",
-        EXAMINATION: "examine",
+        ZONENAME: "SEAa7",
+        DESCRIPTION: "You're standing on the western shore of the island, there are no boats or bridges.",
+        EXAMINATION: "Nice! You're exploring the Island's shore, but it's time to go inland for adventure!",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
         UP: "a6",
         DOWN: "",
         LEFT: "",
         RIGHT: "b7",
     },
     "b7": {
-        ZONENAME: "",
-        DESCRIPTION: "You're standing on the southern shore of the island, there are no boats or bridges.",
-        EXAMINATION: "examine",
+        ZONENAME: "SOUTH WEST BEACH",
+        DESCRIPTION: "A small beach, a nice place to relax after defeating some bosses!",
+        EXAMINATION: "It's a lovely place, but there's nothing to see or do here.",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
-        UP: ["up", "north"],
-        DOWN: ["down", "south"],
-        LEFT: ["left", "west"],
-        RIGHT: ["right", "east"],
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
+        UP: "b6",
+        DOWN: "",
+        LEFT: "a7",
+        RIGHT: "",
     },
     "c7": {
-        ZONENAME: "",
-        DESCRIPTION: "You're standing on the southern shore of the island, there are no boats or bridges.",
-        EXAMINATION: "examine",
+        ZONENAME: "SWAMP",
+        DESCRIPTION: "A green, thick water covers the floor motionlessly, mangrove trees erupt from the silence",
+        EXAMINATION: "It's a swamp, just like the one to the north. You can almost hear the mosquitoes.",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
-        UP: ["up", "north"],
-        DOWN: ["down", "south"],
-        LEFT: ["left", "west"],
-        RIGHT: ["right", "east"],
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
+        UP: "c6",
+        DOWN: "",
+        LEFT: "",
+        RIGHT: "d7",
     },
     "d7": {
-        ZONENAME: "",
-        DESCRIPTION: "You're standing on the southern shore of the island, there are no boats or bridges.",
-        EXAMINATION: "examine",
+        ZONENAME: "SOUTH EAST BEACH",
+        DESCRIPTION: "This beach is rocky, Gourda Castle looms over it, and bones remain from unlucky travellers",
+        EXAMINATION: "You're on the southern shore of the island, but there's nothing to do here.",
         SOLVED: False,
         ITEM: "None",
         BOSS: None,
-        UP: ["up", "north"],
-        DOWN: ["down", "south"],
-        LEFT: ["left", "west"],
-        RIGHT: ["right", "east"],
+        BOSSATTACK: 0,  # Placeholder with value 0
+        BOSSHEALTH: 0,  # Placeholder with value 0
+        UP: "d6",
+        DOWN: "",
+        LEFT: "c7",
+        RIGHT: "",
     },
-    "e7": {
-        ZONENAME: "",
-        DESCRIPTION: "description",
-        EXAMINATION: "examine",
-        SOLVED: False,
-        ITEM: "None",
-        BOSS: None,
-        UP: ["up", "north"],
-        DOWN: ["down", "south"],
-        LEFT: ["left", "west"],
-        RIGHT: ["right", "east"],
-    }
 }
 
 
@@ -601,6 +657,17 @@ def use_potion():
     else:
         print(f"You have {myPlayer.num_health_pots} remaining. Health: {myPlayer.hp}")
 
+
+def use_restoring_liquid():
+    if "restoring liquid" in myPlayer.special_item_inventory:
+        print("You drink the restoring liquid from the oasis")
+        myPlayer.hp += restore_liquid_amount
+        myPlayer.special_item_inventory.remove("restoring liquid")
+        print(f"You're health points have increased by {restore_liquid_amount} and you feel much better!")
+    elif "restoring liquid" not in myPlayer.special_item_inventory:
+        print("You don't have any Restoring Liquid.")
+
+
 def print_location():
     current_location = zonemap[myPlayer.location]  # Fetch the location dictionary
     print("\n" + ("#" * (4 + len(current_location[ZONENAME]))))
@@ -609,13 +676,100 @@ def print_location():
     print("\n" + ("#" * (4 + len(current_location[ZONENAME]))))
 
 
+def print_warrior():
+    ascii_warrior = [
+        "      _,.",
+        "    ,` -.)",
+        "   ( _/-\\-._",
+        "  /,|`--._,-^|            ,",
+        "  \\_| |`-._/||          ,'|",
+        "    |  `-, / |         /  /",
+        "    |     || |        /  /",
+        "     `r-._||/   __   /  /",
+        " __,-<_     )`-/  `./  /",
+        "'  \\   `---'   \\   /  /",
+        "    |           |./  /",
+        "    /           //  /",
+        "\\_/' \\         |/  /",
+        " |    |   _,^-'/  /",
+        " |    , ``  (\\/  /_",
+        "  \\,.->._    \\X-=/^",
+        "  (  /   `-._//^`",
+        "   `Y-.____(__}",
+        "    |     {__)",
+        "          ()"
+    ]
+
+    for line in ascii_warrior:
+        print(line)
+
+
+def print_mage():
+    ascii_mage = [
+        "              _,-'|",
+        "           ,-'._  |",
+        " .||,      |####\\ |",
+        "\\.`',/     \\####| |",
+        "= ,. =      |###| |",
+        "/ || \\    ,-'\#/,'`.",
+        "  ||     ,'   `,,. `.",
+        "  ,|____,' , ,;' \\| |",
+        " (3|\\    _/|/'   _| |",
+        "  ||/,-''  | >-'' _,\\\\",
+        "  ||'      ==\\ ,-'  ,'",
+        "  ||       |  V \\ ,|",
+        "  ||       |    |` |",
+        "  ||       |    |   \\",
+        "  ||       |    \\    \\",
+        "  ||       |     |    \\",
+        "  ||       |      \\_,-'",
+        "  ||       |___,,--)_\\",
+        "  ||         |_|   ccc/",
+        "  ||        ccc/",
+        "  ||                hjm"
+    ]
+
+    for line in ascii_mage:
+        print(line)
+
+
+def print_priest():
+    ascii_priest = [
+        "           .---.",
+        "         /` ___|`\\",
+        "         |_/    \\|",
+        "         (  -/-  )",
+        "          \\_ - _/",
+        "         .-'|_|'-.",
+        "        /         \\",
+        "       /     O     \\",
+        "      / _____!_____ \\",
+        "     /.-------------.\\",
+        "     \\|     ,;,     |/",
+        "      |     ;;;     |",
+        "      |  ;;;;;;;;;  |",
+        "      |   `';;;'`   |",
+        "      |     ;;;     |",
+        "      |     ;;;     |",
+        "      |     :::     |",
+        "      |     ';'     |",
+        "      |             |",
+        "     _| _  __   __ _|_",
+        "   _/ _  __  ___  __ _\\_",
+        " _/ __  ___  _ ___ __ _ \\_"
+    ]
+
+    for line in ascii_priest:
+        print(line)
+
+
 def prompt():
     sitrep()
     print("\n" + "==================")
     print("What would you like to do?")
     action = input("> ")
     acceptable_actions = ["move", "go", "travel", "walk", "journey", "run", "quit", "inspect", "examine", "look",
-                          "peek", "interact", "equip", "potion"]
+                          "peek", "interact", "equip", "potion", "liquid"]
     while action.lower() not in acceptable_actions:
         print("Unknown action, please try again \n")
         action = input("> ")
@@ -627,12 +781,13 @@ def prompt():
         player_examine()
     elif action.lower().endswith("potion"):
         use_potion()
+    elif action.lower().endswith("liquid"):
+        use_restoring_liquid()
     elif action.lower() == "equip":
         player_equip()
 
 
 def player_equip():
-
     sword_leg_mult = 2
     sword_mult = 1.5
     knife_leg_mult = 1.5
@@ -654,7 +809,7 @@ def player_equip():
     print(f"You currently have {myPlayer.item}"
           f"You're current equipped weapon is {myPlayer.equipped_weapon}\n")
     item_to_equip = input("Which item would you like to equip?\n")
-    if item_to_equip in myPlayer.special_item:
+    if item_to_equip in myPlayer.special_item_available:
         print("Sorry, this is a special item, try again")
         player_equip()
     else:
@@ -700,6 +855,7 @@ def player_equip():
             print(f"Sorry, you don't have a {item_to_equip}")
             player_equip()
 
+
 def player_move():
     print("Where would you like to move to?\n")
     dest = input("> ")
@@ -732,68 +888,77 @@ def player_examine():
     wand_leg_mult_exam = 5
     wand_mult_exam = 3
 
-
     current_location = zonemap[myPlayer.location]
 
     if current_location[ITEM] == "none" and current_location[BOSS] == "none":
         zonemap[myPlayer.location][SOLVED] = True
-    if zonemap[myPlayer.location][SOLVED]:
         print("You have already completed this part of the Island.")
     else:
         print(current_location[EXAMINATION])
 
         # Check if there is an item in this location
-        if current_location[ITEM] != "None":
-            print("You find a " + current_location[ITEM] + "!")
-            myPlayer.item.append(zonemap[myPlayer.location][ITEM])
-            if current_location[ITEM] in myPlayer.special_item:
-                print("The " + current_location[ITEM] + " has been added to your Special Items Pouch for later use.")
+        if current_location[ITEM].lower() != "none":
+            if current_location[ITEM] == "potion": # ask if the item is a potion, then add 1 potion to inv
+                print("You found a health potion!")
+                myPlayer.num_health_pots += 1
+                current_location[ITEM] = "none"
+            elif current_location[ITEM].lower().endswith("key"): # ask if item is key, tell player to defeat boss
+                print("You get the sense that by defeating this enemy, you will be rewarded...")
+            elif current_location[ITEM].lower().endswith("liquid"):
+                myPlayer.special_item_inventory.append("restoring liquid")
             else:
-                print(f"Would you like to equip the {current_location[ITEM]} as your weapon?")
-                temp_equip = input("> ")
-                if temp_equip.lower() in ["yes", "y"]:
-                    myPlayer.equipped_weapon = current_location[ITEM]
-                    item_to_equip_exam = myPlayer.equipped_weapon
-                    if item_to_equip_exam.lower().endswith("sword"):
-                        if item_to_equip_exam.lower().startswith("Legendary"):
-                            myPlayer.ap = myPlayer.ap * sword_leg_mult_exam
-                            myPlayer.weapon_mult = sword_leg_mult_exam
-                            print(f"{item_to_equip_exam} equipped, Attack Points now {myPlayer.ap}")
-                        else:
-                            myPlayer.ap = myPlayer.ap * sword_mult_exam
-                            myPlayer.weapon_mult = sword_mult_exam
-                            print(f"{item_to_equip_exam} equipped, Attack Points now {myPlayer.ap}")
-                    elif item_to_equip_exam.lower().endswith("knife"):
-                        if item_to_equip_exam.lower().startswith("Legendary"):
-                            myPlayer.ap = myPlayer.ap * knife_leg_mult_exam
-                            myPlayer.weapon_mult = knife_leg_mult_exam
-                            print(f"{item_to_equip_exam} equipped, Attack Points now {myPlayer.ap}")
-                        else:
-                            myPlayer.ap = myPlayer.ap * knife_mult_exam
-                            myPlayer.weapon_mult = knife_mult_exam
-                            print(f"{item_to_equip_exam} equipped, Attack Points now {myPlayer.ap}")
-                    elif item_to_equip_exam.lower().endswith("wand"):
-                        if item_to_equip_exam.lower().startswith("Legendary"):
-                            myPlayer.mp = myPlayer.mp * wand_leg_mult_exam
-                            myPlayer.weapon_mult = wand_leg_mult_exam
-                            print(f"{item_to_equip_exam} equipped, Magic Points now {myPlayer.mp}")
-                        else:
-                            myPlayer.mp = myPlayer.mp * wand_mult_exam
-                            myPlayer.weapon_mult = wand_mult_exam
-                            print(f"{item_to_equip_exam} equipped, Magic Points now {myPlayer.mp}")
-
-                    elif item_to_equip_exam.lower() == "none":
-                        myPlayer.mp = myPlayer.mp * 1
-
-                        print(f"Nothing equipped, Magic Points now {myPlayer.mp} and Attack Points now {myPlayer.ap}")
-                elif temp_equip.lower() in ["no", "n"]:
-                    print(f"No problem, your current weapon is {myPlayer.equipped_weapon}")
+                print("You find a " + current_location[ITEM] + "!") #acquire item
+                myPlayer.item.append(zonemap[myPlayer.location][ITEM])
+                if current_location[ITEM].lower() in myPlayer.special_item_available and not current_location[ITEM].lower().endswith("key"):
+                    print(
+                        "The " + current_location[ITEM] + " has been added to your Special Items Pouch for later use.")
                 else:
-                    print("Invalid Entry, the item has been placed into your backpack, you may equip it later")
-            current_location[ITEM] = "None"
+                    print(f"Would you like to equip the {current_location[ITEM]} as your weapon?")
+                    temp_equip = input("> ")
+                    if temp_equip.lower() in ["yes", "y"]:
+                        myPlayer.equipped_weapon = current_location[ITEM]
+                        item_to_equip_exam = myPlayer.equipped_weapon
+                        if item_to_equip_exam.lower().endswith("sword"):
+                            if item_to_equip_exam.lower().startswith("Legendary"):
+                                myPlayer.ap = myPlayer.ap * sword_leg_mult_exam
+                                myPlayer.weapon_mult = sword_leg_mult_exam
+                                print(f"{item_to_equip_exam} equipped, Attack Points now {myPlayer.ap}")
+                            else:
+                                myPlayer.ap = myPlayer.ap * sword_mult_exam
+                                myPlayer.weapon_mult = sword_mult_exam
+                                print(f"{item_to_equip_exam} equipped, Attack Points now {myPlayer.ap}")
+                        elif item_to_equip_exam.lower().endswith("knife"):
+                            if item_to_equip_exam.lower().startswith("Legendary"):
+                                myPlayer.ap = myPlayer.ap * knife_leg_mult_exam
+                                myPlayer.weapon_mult = knife_leg_mult_exam
+                                print(f"{item_to_equip_exam} equipped, Attack Points now {myPlayer.ap}")
+                            else:
+                                myPlayer.ap = myPlayer.ap * knife_mult_exam
+                                myPlayer.weapon_mult = knife_mult_exam
+                                print(f"{item_to_equip_exam} equipped, Attack Points now {myPlayer.ap}")
+                        elif item_to_equip_exam.lower().endswith("wand"):
+                            if item_to_equip_exam.lower().startswith("Legendary"):
+                                myPlayer.mp = myPlayer.mp * wand_leg_mult_exam
+                                myPlayer.weapon_mult = wand_leg_mult_exam
+                                print(f"{item_to_equip_exam} equipped, Magic Points now {myPlayer.mp}")
+                            else:
+                                myPlayer.mp = myPlayer.mp * wand_mult_exam
+                                myPlayer.weapon_mult = wand_mult_exam
+                                print(f"{item_to_equip_exam} equipped, Magic Points now {myPlayer.mp}")
+
+                        elif item_to_equip_exam.lower() == "none":
+                            myPlayer.mp = myPlayer.mp * 1
+
+                            print(
+                                f"Nothing equipped, Magic Points now {myPlayer.mp} and Attack Points now {myPlayer.ap}")
+                    elif temp_equip.lower() in ["no", "n"]:
+                        print(f"No problem, your current weapon is {myPlayer.equipped_weapon}")
+                    else:
+                        print("Invalid Entry, the item has been placed into your backpack, you may equip it later")
+                current_location[ITEM] = "None"
 
 
-        else:
+        elif current_location[ITEM].lower() == "none":
             print("There are no items to collect here...")
 
         # Check if there's a boss in this location
@@ -858,15 +1023,22 @@ def boss_fight():
             myPlayer.gameover = True
             break
 
-
     # After the battle
     if boss_hp <= 0:
 
         solved_places[boss_location] = True
         myPlayer.num_health_pots += 1
         print(f"You have received a Health Potion")
+        if boss_name.lower() in ["old wizard"]:  # once old wizard is defeated, give gourda castle key
+            myPlayer.special_item_inventory.append("gourda castle key")
+            print("The Old Wizard disintegrated before your eyes, leaving only the Gourda Castle Key behind!")
+            print("You added the Gourda Castle Key to your Special Item pouch!")
+        elif boss_name.lower() in ["sandworm"]:  # once sandworm is defeated, give lighthouse key
+            myPlayer.special_item_inventory.append("lighthouse key")
+            print("The Sandworm explodes into a million pieces, it left the Lighthouse Key behind!")
+            print("You added the Lighthouse Key to your Special Item pouch!")
 
-        sitrep()
+
     else:
         print(f"You died fighting the {boss_name}")
         print("Would you like to play again? (Yes/No)")
@@ -912,94 +1084,107 @@ def start_game():
         time.sleep(0.05)
     player_name = input("> ")
     myPlayer.name = player_name
+    if player_name.lower() != "admin":
 
-    ## PLAYER CLASS COLLECTION ##
+        ## PLAYER CLASS COLLECTION ##
 
-    question2 = "Tell me " + player_name + ", what manner of being are you?\n"
-    valid_jobs = ["warrior", "mage", "priest"]
-    question2added = ("You can play as any of the following: " + ", ".join(valid_jobs) + "\n")
-    for character in question2:
-        sys.stdout.write(character)
-        sys.stdout.flush()
-        time.sleep(0.05)
-    for character in question2added:
-        sys.stdout.write(character)
-        sys.stdout.flush()
-        time.sleep(0.02)
-    player_job = input("> ")
+        question2 = "Tell me " + player_name + ", what manner of being are you?\n"
+        valid_jobs = ["warrior", "mage", "priest"]
+        question2added = ("You can play as any of the following: " + ", ".join(valid_jobs) + "\n")
+        for character in question2:
+            sys.stdout.write(character)
+            sys.stdout.flush()
+            time.sleep(0.05)
+        for character in question2added:
+            sys.stdout.write(character)
+            sys.stdout.flush()
+            time.sleep(0.02)
+        player_job = input("> ")
 
-    if player_job.lower() in valid_jobs:
-        myPlayer.job = player_job
-        if myPlayer.job.lower() == "warrior":
-            myPlayer.hp = 120
-            myPlayer.mp = 20
-            myPlayer.ap = 50
-        elif myPlayer.job.lower() == "mage":
-            myPlayer.hp = 20
-            myPlayer.mp = 60
-            myPlayer.ap = 30
-        elif myPlayer.job.lower() == "priest":
-            myPlayer.hp = 70
-            myPlayer.mp = 40
-            myPlayer.ap = 20
-        print("You will be known on Lithuin Island as " + myPlayer.name + " the " + myPlayer.job + "!\n")
+        if player_job.lower() in valid_jobs:
+            myPlayer.job = player_job
+            if myPlayer.job.lower() == "warrior":
+                print_warrior()
+                myPlayer.hp = 120
+                myPlayer.mp = 20
+                myPlayer.ap = 50
+            elif myPlayer.job.lower() == "mage":
+                print_mage()
+                myPlayer.hp = 20
+                myPlayer.mp = 60
+                myPlayer.ap = 30
+            elif myPlayer.job.lower() == "priest":
+                print_priest()
+                myPlayer.hp = 70
+                myPlayer.mp = 40
+                myPlayer.ap = 20
+
+            print("You will be known on Lithuin Island as " + myPlayer.name + " the " + myPlayer.job + "!\n")
+        else:
+            while myPlayer.job.lower() not in valid_jobs:
+                print("That's not a valid player class, try again")
+                player_job = input("> ")
+                if player_job.lower() in valid_jobs:
+                    myPlayer.job = player_job
+                    if myPlayer.job.lower() == "warrior":
+                        print_warrior()
+                        myPlayer.hp = 120
+                        myPlayer.mp = 20
+                        myPlayer.ap = 50
+                    elif myPlayer.job.lower() == "mage":
+                        print_mage()
+                        myPlayer.hp = 20
+                        myPlayer.mp = 120
+                        myPlayer.ap = 30
+                    elif myPlayer.job.lower() == "priest":
+                        print_priest()
+                        myPlayer.hp = 70
+                        myPlayer.mp = 70
+                        myPlayer.ap = 20
+                    print("You will be known on Lithuin Island as " + myPlayer.name + " the " + myPlayer.job + "!\n")
+
+        ## INTRODUCTION ##
+
+        question3 = "Welcome, " + player_name + " the " + player_job + ".\n"
+        for character in question3:
+            sys.stdout.write(character)
+            sys.stdout.flush()
+            time.sleep(0.05)
+
+        speech1 = "Welcome to Lithuin Island! \n"
+        speech2 = "The Central Forest is in the middle of the Island of Lithuin. Tall trees create a canopy that blocks \n"
+        speech3 = "the sky, but causes the forest floor to glisten with a green, almost magical glow. A strange mound \n"
+        speech4 = "of dirt a few steps away appears fairly fresh.\n"
+
+        for character in speech1:
+            sys.stdout.write(character)
+            sys.stdout.flush()
+            time.sleep(0.1)
+        for character in speech2:
+            sys.stdout.write(character)
+            sys.stdout.flush()
+            time.sleep(0.1)
+        for character in speech3:
+            sys.stdout.write(character)
+            sys.stdout.flush()
+            time.sleep(0.05)
+        for character in speech4:
+            sys.stdout.write(character)
+            sys.stdout.flush()
+            time.sleep(0.01)
+
+        clear_screen()
+        print("")
+        print("##########################")
+        print("#   Let's start now...   #")
+        print("##########################")
+        main_game_loop()
     else:
-        while myPlayer.job.lower() not in valid_jobs:
-            print("That's not a valid player class, try again")
-            player_job = input("> ")
-            if player_job.lower() in valid_jobs:
-                myPlayer.job = player_job
-                if myPlayer.job.lower() == "warrior":
-                    myPlayer.hp = 120
-                    myPlayer.mp = 20
-                    myPlayer.ap = 50
-                elif myPlayer.job.lower() == "mage":
-                    myPlayer.hp = 20
-                    myPlayer.mp = 120
-                    myPlayer.ap = 30
-                elif myPlayer.job.lower() == "priest":
-                    myPlayer.hp = 70
-                    myPlayer.mp = 70
-                    myPlayer.ap = 20
-                print("You will be known on Lithuin Island as " + myPlayer.name + " the " + myPlayer.job + "!\n")
-
-
-    ## INTRODUCTION ##
-
-    question3 = "Welcome, " + player_name + " the " + player_job + ".\n"
-    for character in question3:
-        sys.stdout.write(character)
-        sys.stdout.flush()
-        time.sleep(0.05)
-
-    speech1 = "Welcome to Lithuin Island! \n"
-    speech2 = "The Central Forest is in the middle of the Island of Lithuin. Tall trees create a canopy that blocks \n"
-    speech3 = "the sky, but causes the forest floor to glisten with a green, almost magical glow. A strange mound \n"
-    speech4 = "of dirt a few steps away appears fairly fresh.\n"
-
-    for character in speech1:
-        sys.stdout.write(character)
-        sys.stdout.flush()
-        time.sleep(0.1)
-    for character in speech2:
-        sys.stdout.write(character)
-        sys.stdout.flush()
-        time.sleep(0.1)
-    for character in speech3:
-        sys.stdout.write(character)
-        sys.stdout.flush()
-        time.sleep(0.05)
-    for character in speech4:
-        sys.stdout.write(character)
-        sys.stdout.flush()
-        time.sleep(0.01)
-
-    clear_screen()
-    print("")
-    print("##########################")
-    print("#   Let's start now...   #")
-    print("##########################")
-    main_game_loop()
+        myPlayer.job = "ADMIN"
+        myPlayer.hp = 120
+        myPlayer.mp = 20
+        myPlayer.ap = 50
+        main_game_loop()
 
 
 title_screen()
