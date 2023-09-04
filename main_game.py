@@ -34,21 +34,21 @@ def sitrep():
 
 class Player:
     def __init__(self):
-        self.equipped_weapon = "None"  # Weapon Equipped
-        self.weapons_inventory = [] # weapons on inventory
-        self.special_item_inventory = [] # special items that are on players inventory
-        self.special_item_available = ["lighthouse key", "gourda castle key", "restoring liquid"]
-        self.name = ""  # player name
-        self.hp = 0  # health points
-        self.mp = 0  # magic points
-        self.ap = 0  # attack points
-        self.status_effect = []  # status effects
-        self.job = ""  # player class type
-        self.location = "c4" # player starting location, updated based on player movement
-        self.num_health_pots = 2 # numnber of health potions at game start, updates during game
-        self.health_pot_heal_amount = 40 # amount health potions increase health points by
-        self.gameover = False # when true, game ends
-        self.weapon_mult = 1 # weapon multiplier, updated when new weapon equipped
+        myPlayer.equipped_weapon = "None"  # Weapon Equipped
+        myPlayer.weapons_inventory = [] # weapons on inventory
+        myPlayer.special_item_inventory = [] # special items that are on players inventory
+        myPlayer.special_item_available = ["lighthouse key", "gourda castle key", "restoring liquid"]
+        myPlayer.name = ""  # player name
+        myPlayer.hp = 0  # health points
+        myPlayer.mp = 0  # magic points
+        myPlayer.ap = 0  # attack points
+        myPlayer.status_effect = []  # status effects
+        myPlayer.job = ""  # player class type
+        myPlayer.location = "c4" # player starting location, updated based on player movement
+        myPlayer.num_health_pots = 2 # numnber of health potions at game start, updates during game
+        myPlayer.health_pot_heal_amount = 40 # amount health potions increase health points by
+        myPlayer.gameover = False # when true, game ends
+        myPlayer.weapon_mult = 1 # weapon multiplier, updated when new weapon equipped
 
 
 myPlayer = Player()
@@ -330,7 +330,7 @@ zonemap = {
     },
     "b3": {
         ZONENAME: "NORTH WEST FOREST",
-        DESCRIPTION: "Silence... Sticky strands of web dominate the canopy. Cocooned shapes hand from the trees.",
+        DESCRIPTION: "Silence... Sticky strands of web dominate the canopy. Cocooned shapes hang from the trees.",
         EXAMINATION: "You look up, and out of the corner of your eye a huge shape scuttles into an attack position...",
         SOLVED: False,
         ITEM: "None",
@@ -431,9 +431,9 @@ zonemap = {
         DESCRIPTION: "This cave is dark, and smelly, but goes deep...",
         EXAMINATION: "You call into the cave, your voice echoes back. It's too scary to go any deeper... for now...'",
         ITEM: "Legendary Battle Sword",
-        BOSS: None,
-        BOSSATTACK: 0,  # Placeholder with value 0
-        BOSSHEALTH: 0,  # Placeholder with value 0
+        BOSS: "Cave Troll",
+        BOSSATTACK: 40,  # Placeholder with value 0
+        BOSSHEALTH: 20,  # Placeholder with value 0
         UP: "d3",
         DOWN: "d5",
         LEFT: "c4",
@@ -982,6 +982,46 @@ def player_examine():
 ## GAME FUNCTIONALITY ##
 
 
+def restart_game():
+    current_location = zonemap[myPlayer.location][ZONENAME]
+    boss_name = zonemap[myPlayer.location][BOSS]
+    ascii_death_text = '''
+             88                               88           
+             88                         ,d    88           
+             88                         88    88           
+     ,adPPYb,88  ,adPPYba, ,adPPYYba, MM88MMM 88,dPPYba,   
+    a8"    `Y88 a8P_____88 ""     `Y8   88    88P'    "8a  
+    8b       88 8PP""""""" ,adPPPPP88   88    88       88  
+    "8a,   ,d88 "8b,   ,aa 88,    ,88   88,   88       88  
+     `"8bbdP"Y8  `"Ybbd8"' `"8bbdP"Y8   "Y888 88       88  
+    '''
+
+    print(ascii_death_text)
+    print(f"You were slain during your adventure by a {boss_name}, whilst at the {current_location} and there is no ")
+    print(f"potion nor spell can fix that")
+    print(f"But you can take what you've learned forward with you, into a new body, a new soul...")
+    print(f"And a new name - if you wish!")
+
+    self.equipped_weapon = "None"  # Weapon Equipped
+    self.weapons_inventory = []  # weapons on inventory
+    self.special_item_inventory = []  # special items that are on players inventory
+    self.special_item_available = ["lighthouse key", "gourda castle key", "restoring liquid"]
+    self.name = ""  # player name
+    self.hp = 0  # health points
+    self.mp = 0  # magic points
+    self.ap = 0  # attack points
+    self.status_effect = []  # status effects
+    self.job = ""  # player class type
+    self.location = "c4"  # player starting location, updated based on player movement
+    self.num_health_pots = 2  # numnber of health potions at game start, updates during game
+    self.health_pot_heal_amount = 40  # amount health potions increase health points by
+    self.gameover = False  # when true, game ends
+    self.weapon_mult = 1  # weapon multiplier, updated when new weapon equipped
+
+
+    title_screen()
+
+
 def boss_fight():
     clear_screen()
     # set variables so function is easy to write
@@ -1057,7 +1097,8 @@ def boss_fight():
         print("Would you like to play again? (Yes/No)")
         restart = input("> ")
         if restart.lower() == "yes":
-            start_game() # bugged, not currently working
+            restart_game()
+
         elif restart.lower() == "no":
             print(f"The final status of {myPlayer.name} the {myPlayer.job}")
             sitrep()
@@ -1068,7 +1109,7 @@ def boss_fight():
             print("Invalid answer, would you like to restart the game (Yes/No)")
             restart = input("> ")
             if restart.lower() == "yes":
-                start_game()
+                restart_game()
             elif restart.lower() == "no":
                 print(f"The final status of {myPlayer.name} the {myPlayer.job}")
                 sitrep()
@@ -1196,9 +1237,9 @@ def start_game():
         main_game_loop()
     else:
         myPlayer.job = "ADMIN"
-        myPlayer.hp = 120
+        myPlayer.hp = 20
         myPlayer.mp = 20
-        myPlayer.ap = 50
+        myPlayer.ap = 20
         main_game_loop()
 
 
