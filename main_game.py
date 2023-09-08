@@ -16,7 +16,7 @@ def clear_screen():
         os.system('clear')  # Use 'clear' to clear the screen on Unix/Linux
 
 
-screen_width = 100 #set screen width to 100
+screen_width = 100  # set screen width to 100
 
 
 # function to display current character situation including location, health etc
@@ -34,21 +34,21 @@ def sitrep():
 
 class Player:
     def __init__(self):
-        myPlayer.equipped_weapon = "None"  # Weapon Equipped
-        myPlayer.weapons_inventory = [] # weapons on inventory
-        myPlayer.special_item_inventory = [] # special items that are on players inventory
-        myPlayer.special_item_available = ["lighthouse key", "gourda castle key", "restoring liquid"]
-        myPlayer.name = ""  # player name
-        myPlayer.hp = 0  # health points
-        myPlayer.mp = 0  # magic points
-        myPlayer.ap = 0  # attack points
-        myPlayer.status_effect = []  # status effects
-        myPlayer.job = ""  # player class type
-        myPlayer.location = "c4" # player starting location, updated based on player movement
-        myPlayer.num_health_pots = 2 # numnber of health potions at game start, updates during game
-        myPlayer.health_pot_heal_amount = 40 # amount health potions increase health points by
-        myPlayer.gameover = False # when true, game ends
-        myPlayer.weapon_mult = 1 # weapon multiplier, updated when new weapon equipped
+        self.equipped_weapon = "None"  # Weapon Equipped
+        self.weapons_inventory = []  # weapons on inventory
+        self.special_item_inventory = []  # special items that are on players inventory
+        self.special_item_available = ["lighthouse key", "gourda castle key", "restoring liquid"]
+        self.name = ""  # player name
+        self.hp = 0  # health points
+        self.mp = 0  # magic points
+        self.ap = 0  # attack points
+        self.status_effect = []  # status effects
+        self.job = ""  # player class type
+        self.location = "c4"  # player starting location, updated based on player movement
+        self.num_health_pots = 2  # number of health potions at game start, updates during game
+        self.health_pot_heal_amount = 40  # amount health potions increase health points by
+        self.gameover = False  # when true, game ends
+        self.weapon_mult = 1  # weapon multiplier, updated when new weapon equipped
 
 
 myPlayer = Player()
@@ -89,7 +89,7 @@ def title_screen():
     print("# Game Design - RainyGrinch #")
     print("#  Inspired by - BTONG.ME   #")
     print("#############################")
-    title_screen_selections() # prompt player to select option from title screen
+    title_screen_selections()  # prompt player to select option from title screen
 
 
 ## HELP MENU ##
@@ -656,9 +656,9 @@ zonemap = {
 
 
 def use_potion():
-    if myPlayer.num_health_pots > 0: # check player has potions
-        myPlayer.num_health_pots -= 1 # if yes, remove one potion from player inventory
-        myPlayer.hp = myPlayer.hp + myPlayer.health_pot_heal_amount # increase HP by Potion value
+    if myPlayer.num_health_pots > 0:  # check player has potions
+        myPlayer.num_health_pots -= 1  # if yes, remove one potion from player inventory
+        myPlayer.hp = myPlayer.hp + myPlayer.health_pot_heal_amount  # increase HP by Potion value
         print(f"You used a Health Potion, increasing your health by {myPlayer.health_pot_heal_amount} and "
               f"you have {myPlayer.num_health_pots} remaining. Health now: {myPlayer.hp}")
     else:
@@ -666,10 +666,10 @@ def use_potion():
 
 
 def use_restoring_liquid():
-    if "restoring liquid" in myPlayer.special_item_inventory: # check player has restoring liquid in inventory
+    if "restoring liquid" in myPlayer.special_item_inventory:  # check player has restoring liquid in inventory
         print("You drink the restoring liquid from the oasis")
-        myPlayer.hp += restore_liquid_amount # add restoring liquid value to HP
-        myPlayer.special_item_inventory.remove("restoring liquid") # remove restoring liquid from inventory
+        myPlayer.hp += restore_liquid_amount  # add restoring liquid value to HP
+        myPlayer.special_item_inventory.remove("restoring liquid")  # remove restoring liquid from inventory
         print(f"You're health points have increased by {restore_liquid_amount} and you feel much better!")
     elif "restoring liquid" not in myPlayer.special_item_inventory:
         print("You don't have any Restoring Liquid.")
@@ -677,7 +677,7 @@ def use_restoring_liquid():
 
 def print_location():
     current_location = zonemap[myPlayer.location]  # Fetch the location dictionary
-    print("\n" + ("#" * (4 + len(current_location[ZONENAME])))) # print num of # equivalent to length of zone name
+    print("\n" + ("#" * (4 + len(current_location[ZONENAME]))))  # print num of # equivalent to length of zone name
     print("# " + current_location[ZONENAME].upper() + " #")
     print("# " + current_location[DESCRIPTION] + " #")
     print("\n" + ("#" * (4 + len(current_location[ZONENAME]))))
@@ -777,7 +777,7 @@ def prompt():
     action = input("> ")
     acceptable_actions = ["move", "go", "travel", "walk", "journey", "run", "quit", "inspect", "examine", "look",
                           "peek", "interact", "equip", "potion", "liquid"]
-    while action.lower() not in acceptable_actions: # check input is in acceptable actions list
+    while action.lower() not in acceptable_actions:  # check input is in acceptable actions list
         print("Unknown action, please try again \n")
         action = input("> ")
     if action.lower() == "quit":
@@ -795,7 +795,6 @@ def prompt():
 
 
 def player_equip():
-
     # define weapon multiplier values
     sword_leg_mult = 2
     sword_mult = 1.5
@@ -870,7 +869,7 @@ def player_move():
     print("Where would you like to move to?\n")
     dest = input("> ")
     if dest in ["up", "north"]:
-        destination = zonemap[myPlayer.location][UP] # take next location from zonemap dictionary
+        destination = zonemap[myPlayer.location][UP]  # take next location from zonemap dictionary
         movement_handler(destination)
     if dest in ["left", "west"]:
         destination = zonemap[myPlayer.location][LEFT]
@@ -884,7 +883,7 @@ def player_move():
 
 
 def movement_handler(destination):
-    destination_name = zonemap[destination][ZONENAME] # moves player based on player_move function
+    destination_name = zonemap[destination][ZONENAME]  # moves player based on player_move function
     print("\n" + "You have moved to the " + destination_name + ".")
     myPlayer.location = destination
     print_location()
@@ -899,38 +898,40 @@ def player_examine():
     wand_leg_mult_exam = 5
     wand_mult_exam = 3
 
-    current_location = zonemap[myPlayer.location] # set player current location based on zonemap dictionary
+    current_location = zonemap[myPlayer.location]  # set player current location based on zonemap dictionary
 
-    if current_location[ITEM] == "none" and current_location[BOSS] == "none": # if no item and no boss...
-        zonemap[myPlayer.location][SOLVED] = True #...set solved as true for area
+    if current_location[ITEM] == "none" and current_location[BOSS] == "none":  # if no item and no boss...
+        zonemap[myPlayer.location][SOLVED] = True  # ...set solved as true for area
         print("You have already completed this part of the Island.")
     else:
-        print(current_location[EXAMINATION]) # print examine from zonemap dictionary
+        print(current_location[EXAMINATION])  # print examine from zonemap dictionary
 
         # Check if there is an item in this location
         if current_location[ITEM].lower() != "none":
-            if current_location[ITEM] == "potion": # ask if the item is a potion, then add 1 potion to inv
+            if current_location[ITEM] == "potion":  # ask if the item is a potion, then add 1 potion to inv
                 print("You found a health potion!")
                 myPlayer.num_health_pots += 1
                 current_location[ITEM] = "none"
-            elif current_location[ITEM].lower().endswith("key"): # ask if item is key, tell player to defeat boss
+            elif current_location[ITEM].lower().endswith("key"):  # ask if item is key, tell player to defeat boss
                 print("You get the sense that by defeating this enemy, you will be rewarded...")
             elif current_location[ITEM].lower().endswith("liquid"):
                 myPlayer.special_item_inventory.append("restoring liquid")
             else:
-                print("You find a " + current_location[ITEM] + "!") #acquire item
+                print("You find a " + current_location[ITEM] + "!")  # acquire item
                 myPlayer.weapons_inventory.append(zonemap[myPlayer.location][ITEM])
-                if current_location[ITEM].lower() in myPlayer.special_item_available and not current_location[ITEM].lower().endswith("key"):
-                    # above, if item is in avialable items but not a key, then...
+                if current_location[ITEM].lower() in myPlayer.special_item_available and not current_location[
+                    ITEM].lower().endswith("key"):
+                    # above, if item is in available items but not a key, then...
                     print(
                         "The " + current_location[ITEM] + " has been added to your Special Items Pouch for later use.")
                 else:
-                    print(f"Would you like to equip the {current_location[ITEM]} as your weapon?") #assume item is wepaon
+                    print(
+                        f"Would you like to equip the {current_location[ITEM]} as your weapon?")  # assume item is weapon
                     temp_equip = input("> ")
                     if temp_equip.lower() in ["yes", "y"]:
-                        myPlayer.equipped_weapon = current_location[ITEM] # equip weapon form inventory
+                        myPlayer.equipped_weapon = current_location[ITEM]  # equip weapon form inventory
                         item_to_equip_exam = myPlayer.equipped_weapon
-                        if item_to_equip_exam.lower().endswith("sword"): # same as player_equip function
+                        if item_to_equip_exam.lower().endswith("sword"):  # same as player_equip function
                             if item_to_equip_exam.lower().startswith("Legendary"):
                                 myPlayer.ap = myPlayer.ap * sword_leg_mult_exam
                                 myPlayer.weapon_mult = sword_leg_mult_exam
@@ -970,11 +971,11 @@ def player_examine():
                 current_location[ITEM] = "None"
 
 
-        elif current_location[ITEM].lower() == "none": # if no items in map location...
+        elif current_location[ITEM].lower() == "none":  # if no items in map location...
             print("There are no items to collect here...")
 
         # Check if there's a boss in this location
-        if current_location[BOSS] is not None: # if boss exists, fight boss
+        if current_location[BOSS] is not None:  # if boss exists, fight boss
             print("You've encountered a " + current_location[BOSS] + "!")
             boss_fight()
 
@@ -1002,22 +1003,21 @@ def restart_game():
     print(f"But you can take what you've learned forward with you, into a new body, a new soul...")
     print(f"And a new name - if you wish!")
 
-    self.equipped_weapon = "None"  # Weapon Equipped
-    self.weapons_inventory = []  # weapons on inventory
-    self.special_item_inventory = []  # special items that are on players inventory
-    self.special_item_available = ["lighthouse key", "gourda castle key", "restoring liquid"]
-    self.name = ""  # player name
-    self.hp = 0  # health points
-    self.mp = 0  # magic points
-    self.ap = 0  # attack points
-    self.status_effect = []  # status effects
-    self.job = ""  # player class type
-    self.location = "c4"  # player starting location, updated based on player movement
-    self.num_health_pots = 2  # numnber of health potions at game start, updates during game
-    self.health_pot_heal_amount = 40  # amount health potions increase health points by
-    self.gameover = False  # when true, game ends
-    self.weapon_mult = 1  # weapon multiplier, updated when new weapon equipped
-
+    myPlayer.equipped_weapon = "None"  # Weapon Equipped
+    myPlayer.weapons_inventory = []  # weapons on inventory
+    myPlayer.special_item_inventory = []  # special items that are on players inventory
+    myPlayer.special_item_available = ["lighthouse key", "gourda castle key", "restoring liquid"]
+    myPlayer.name = ""  # player name
+    myPlayer.hp = 0  # health points
+    myPlayer.mp = 0  # magic points
+    myPlayer.ap = 0  # attack points
+    myPlayer.status_effect = []  # status effects
+    myPlayer.job = ""  # player class type
+    myPlayer.location = "c4"  # player starting location, updated based on player movement
+    myPlayer.num_health_pots = 2  # number of health potions at game start, updates during game
+    myPlayer.health_pot_heal_amount = 40  # amount health potions increase health points by
+    myPlayer.gameover = False  # when true, game ends
+    myPlayer.weapon_mult = 1  # weapon multiplier, updated when new weapon equipped
 
     title_screen()
 
@@ -1049,8 +1049,9 @@ def boss_fight():
         if choice.lower().endswith("potion"):
             use_potion()
         elif choice.lower() == "attack":
-            player_attack = random.randint(1, myPlayer.ap) # player attack points randomly select between 1 and player attack points
-            boss_hp -= player_attack # deduct player attack from enemy HP
+            player_attack = random.randint(1,
+                                           myPlayer.ap)  # player attack points randomly select between 1 and player attack points
+            boss_hp -= player_attack  # deduct player attack from enemy HP
             print(f"You attack the {boss_name.upper()} for {player_attack} damage.")
 
             if boss_hp <= 0:
@@ -1079,8 +1080,8 @@ def boss_fight():
     # After the battle
     if boss_hp <= 0:
 
-        solved_places[boss_location] = True # set location to solved
-        myPlayer.num_health_pots += 1 # reward player with health potion
+        solved_places[boss_location] = True  # set location to solved
+        myPlayer.num_health_pots += 1  # reward player with health potion
         print(f"You have received a Health Potion")
         if boss_name.lower() in ["old wizard"]:  # once old wizard is defeated, give gourda castle key
             myPlayer.special_item_inventory.append("gourda castle key")
@@ -1126,19 +1127,18 @@ def main_game_loop():
         prompt()
 
 
-
 def start_game():
     clear_screen()
 
     ## NAME COLLECTION ###
     question1 = "Tell me, what name do you go by?\n"
     for character in question1:
-        sys.stdout.write(character) # prints info slowly
+        sys.stdout.write(character)  # prints info slowly
         sys.stdout.flush()
         time.sleep(0.05)
     player_name = input("> ")
     myPlayer.name = player_name
-    if player_name.lower() != "admin": # if user name is admin, skip game intro, otherwise continue
+    if player_name.lower() != "admin":  # if user name is admin, skip game intro, otherwise continue
 
         ## PLAYER CLASS COLLECTION ##
 
@@ -1206,10 +1206,10 @@ def start_game():
             sys.stdout.flush()
             time.sleep(0.05)
 
-        #game intro
+        # game intro
         speech1 = "Welcome to Lithuin Island! \n"
-        speech2 = "The Central Forest is in the middle of the Island of Lithuin. Tall trees create a canopy that blocks \n"
-        speech3 = "the sky, but causes the forest floor to glisten with a green, almost magical glow. A strange mound \n"
+        speech2 = "The Central Forest is in the middle of Lithuin Island. Tall trees create a canopy that blocks\n"
+        speech3 = "the sky, but causes the forest floor to glisten with a green, almost magical glow. A strange mound\n"
         speech4 = "of dirt a few steps away appears fairly fresh.\n"
 
         for character in speech1:
